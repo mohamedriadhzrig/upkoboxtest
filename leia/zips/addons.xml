@@ -1,18 +1,19 @@
-<?xml version='1.0' encoding='utf-8'?>
-<addons><addon id="plugin.video.sendtokodiU2P" name="U2Pplay" version="0.9.40" provider-name="noway">
+<?xml version="1.0" encoding="UTF-8"?>
+<addons>
+<addon id="plugin.video.sendtokodiU2P" name="U2Pplay" version="0.9.40" provider-name="noway">
   <requires>
     <trycatch>
       <try>
-          <import addon="xbmc.python" version="3.0.0" />
+          <import addon="xbmc.python" version="3.0.0"/>
       </try>
       <catch>
-          <import addon="xbmc.python" version="2.25.0" />
+          <import addon="xbmc.python" version="2.25.0"/>
       </catch>
         </trycatch>
-    <import addon="script.module.requests" version="2.12.4" />
+    <import addon="script.module.requests" version="2.12.4"/>
     <import addon="script.module.pyxbmct" />
   </requires>
-  <extension point="xbmc.python.pluginsource" library="service.py">
+  <extension point="xbmc.python.pluginsource" library="service.py" >
   <provides>video</provides>
 	</extension>
   <extension point="kodi.context.item">
@@ -54,12 +55,12 @@
   <extension point="xbmc.addon.metadata">
     <summary lang="en">U2Pplay</summary>
     <description lang="en">U2Pplay permet d'importer une base de contenu en 1 clic ou de creer des fichiers strm a partir d'IDs de pastes cryptes puis de les streamer via Kodi. Necessite un compte premium Uptobox ou Alldebrid</description>
-    <disclaimer lang="en" />
+    <disclaimer lang="en"></disclaimer>
     <platform>all</platform>
     <license>MIT License</license>
-    <website />
-    <email />
-    <source />
+    <website></website>
+    <email></email>
+    <source></source>
     <assets>
       <icon>icon.png</icon>
       <fanart>fanart.jpg</fanart>
@@ -70,20 +71,25 @@
 </addon><addon id="repository.UpKobox" name="UpKobox Alpha Repository" version="1.0" provider-name="UpKobox">
     <extension point="xbmc.addon.repository" name="UpKobox Alpha Repository">
         <dir>
-            <info compressed="false">https://raw.githubusercontent.com/UpKobox/repository.UpKobox/master/repo/zips/addons.xml</info>
-            <checksum>https://raw.githubusercontent.com/UpKobox/repository.UpKobox/master/repo/zips/addons.xml.md5</checksum>
-            <datadir zip="true">https://raw.githubusercontent.com/UpKobox/repository.UpKobox/master/repo/zips/</datadir>
+            <info compressed="false">https://raw.githubusercontent.com/UpKobox/repository.UpKoboxTest/master/repo/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/UpKobox/repository.UpKoboxTest/master/repo/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/UpKobox/repository.UpKoboxTest/master/repo/zips/</datadir>
         </dir>
-        <dir minversion="19.0.0">
-            <info compressed="false">https://raw.githubusercontent.com/UpKobox/repository.UpKobox/master/matrix/zips/addons.xml</info>
-            <checksum>https://raw.githubusercontent.com/UpKobox/repository.UpKobox/master/matrix/zips/addons.xml.md5</checksum>
-            <datadir zip="true">https://raw.githubusercontent.com/UpKobox/repository.UpKobox/master/matrix/zips/</datadir>
+        <dir minversion="18.0" maxversion="18.9.0">
+            <info compressed="false">https://raw.githubusercontent.com/UpKobox/repository.UpKoboxTest/master/leia/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/UpKobox/repository.UpKoboxTest/master/leia/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/UpKobox/repository.UpKoboxTest/master/leia/zips/</datadir>
+        </dir>
+        <dir minversion="18.9.0">
+            <info compressed="false">https://raw.githubusercontent.com/UpKobox/repository.UpKoboxTest/master/matrix/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/UpKobox/repository.UpKoboxTest/master/matrix/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/UpKobox/repository.UpKoboxTest/master/matrix/zips/</datadir>
         </dir>
     </extension>
     <extension point="xbmc.addon.metadata">
-        <summary>UpKobox Alpha Repository</summary>
-        <description>Un référentiel pour les versions alpha </description>
-        <disclaimer />
+        <summary>UpKobox U2P Repository</summary>
+        <description>Un référentiel pour U2P </description>
+        <disclaimer></disclaimer>
         <platform>all</platform>
         <assets>
             <icon>icon.png</icon>
@@ -92,21 +98,21 @@
     </extension>
 </addon><addon id="service.U2PplayMaj" name="U2Pplay Maj HK2 et skin" version="1.0.1" provider-name="CoKodico">
     <requires>
-        <import addon="xbmc.python" version="3.0.0" />
+        <import addon="xbmc.python" version="3.0.0"/>
     </requires>
-    <extension point="xbmc.service" library="U2Pplay.py" start="startup" />
+    <extension point="xbmc.service" library="U2Pplay.py" start="startup"/>
     <extension point="xbmc.addon.metadata">
         <summary lang="en_GB">U2Pplay</summary>
-        <description lang="en_GB" />
-        <language />
+        <description lang="en_GB"></description>
+        <language></language>
         <platform>all</platform>
         <license>Apache-2.0</license>
-        <forum />
-        <website />
-        <email />
-        <source />
-        <news />
-        <disclaimer />
+        <forum></forum>
+        <website></website>
+        <email></email>
+        <source></source>
+        <news></news>
+        <disclaimer></disclaimer>
         <assets>
             <icon>resources/icon.png</icon>
             <fanart>resources/fanart.jpg</fanart>
@@ -114,23 +120,24 @@
             <screenshot>screenshot-02.jpg</screenshot>
         </assets>
     </extension>
-</addon><addon id="service.U2PplayMajRapide" name="U2Pplay Maj rapide" version="1.0.1" provider-name="CoKodico">
+</addon>
+<addon id="service.U2PplayMajRapide" name="U2Pplay Maj rapide" version="1.0.1" provider-name="CoKodico">
     <requires>
-        <import addon="xbmc.python" version="3.0.0" />
+        <import addon="xbmc.python" version="3.0.0"/>
     </requires>
-    <extension point="xbmc.service" library="U2PplayFast.py" start="startup" />
+    <extension point="xbmc.service" library="U2PplayFast.py" start="startup"/>
     <extension point="xbmc.addon.metadata">
         <summary lang="en_GB">U2Pplay</summary>
-        <description lang="en_GB" />
-        <language />
+        <description lang="en_GB"></description>
+        <language></language>
         <platform>all</platform>
         <license>Apache-2.0</license>
-        <forum />
-        <website />
-        <email />
-        <source />
-        <news />
-        <disclaimer />
+        <forum></forum>
+        <website></website>
+        <email></email>
+        <source></source>
+        <news></news>
+        <disclaimer></disclaimer>
         <assets>
             <icon>resources/icon.png</icon>
             <fanart>resources/fanart.jpg</fanart>
@@ -138,4 +145,5 @@
             <screenshot>screenshot-02.jpg</screenshot>
         </assets>
     </extension>
-</addon></addons>
+</addon>
+</addons>
