@@ -1,18 +1,19 @@
-<?xml version='1.0' encoding='utf-8'?>
-<addons><addon id="plugin.video.sendtokodiU2P" name="U2Pplay" version="0.9.40" provider-name="noway">
+<?xml version="1.0" encoding="UTF-8"?>
+<addons>
+<addon id="plugin.video.sendtokodiU2P" name="U2Pplay" version="0.9.40" provider-name="noway">
   <requires>
     <trycatch>
       <try>
-          <import addon="xbmc.python" version="3.0.0" />
+          <import addon="xbmc.python" version="3.0.0"/>
       </try>
       <catch>
-          <import addon="xbmc.python" version="2.25.0" />
+          <import addon="xbmc.python" version="2.25.0"/>
       </catch>
         </trycatch>
-    <import addon="script.module.requests" version="2.12.4" />
+    <import addon="script.module.requests" version="2.12.4"/>
     <import addon="script.module.pyxbmct" />
   </requires>
-  <extension point="xbmc.python.pluginsource" library="service.py">
+  <extension point="xbmc.python.pluginsource" library="service.py" >
   <provides>video</provides>
 	</extension>
   <extension point="kodi.context.item">
@@ -54,12 +55,12 @@
   <extension point="xbmc.addon.metadata">
     <summary lang="en">U2Pplay</summary>
     <description lang="en">U2Pplay permet d'importer une base de contenu en 1 clic ou de creer des fichiers strm a partir d'IDs de pastes cryptes puis de les streamer via Kodi. Necessite un compte premium Uptobox ou Alldebrid</description>
-    <disclaimer lang="en" />
+    <disclaimer lang="en"></disclaimer>
     <platform>all</platform>
     <license>MIT License</license>
-    <website />
-    <email />
-    <source />
+    <website></website>
+    <email></email>
+    <source></source>
     <assets>
       <icon>icon.png</icon>
       <fanart>fanart.jpg</fanart>
@@ -88,7 +89,7 @@
     <extension point="xbmc.addon.metadata">
         <summary>UpKobox Repository</summary>
         <description>Un référentiel pour U2P </description>
-        <disclaimer />
+        <disclaimer></disclaimer>
         <platform>all</platform>
         <assets>
             <icon>icon.png</icon>
