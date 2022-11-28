@@ -2,6 +2,7 @@
 <addon id="service.autoexec" name="Autoexec Service" version="0.2" provider-name="noway">
 	<requires>
 		<import addon="xbmc.python" version="3.0.0"/>
+		<import addon="script.module.requests" version="2.12.4"/>
 	</requires>
 	<extension point="xbmc.service" library="autoexec.py">
 	</extension>

@@ -37,8 +37,8 @@ except ImportError:
 
 pyVersion = sys.version_info.major
 pyVersionM = sys.version_info.minor
-if pyVersionM == 7:
-    import cryptPaste7 as cryptage
+if pyVersionM == 11:
+    import cryptPaste11 as cryptage
 elif pyVersionM == 8:
     import cryptPaste8 as cryptage
 elif pyVersionM == 9:

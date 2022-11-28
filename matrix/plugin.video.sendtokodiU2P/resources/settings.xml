@@ -23,7 +23,7 @@
         <setting id="actifupto" label="Mon Uptobox" type="bool" default="false" />
         <setting label="Création accés répertoire" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=createRUPTO)" visible="eq(-1,true)" />
         <setting label="Création accés répertoire Publique" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=createRUPTOP)" visible="eq(-2,true)" />
-        <setting label="Cryptage répertoire Publique" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=cryptFolder)" visible="eq(-3,true)" />        
+        <setting label="Cryptage répertoire Publique" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=cryptFolder)" visible="eq(-3,true)" />
         <setting label="Supprimer Repertoire" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=suppLUPTO)" visible="eq(-4,true)" />
         <setting id="nbupto" label="Pagination Uptobox" type="number" default="20" visible="eq(-5,true)" />
         <setting id="modeadd" label="Mode ajout à son compte" type="labelenum" values="alias|std" default="alias"  visible="eq(-6,true)"/>
@@ -35,7 +35,7 @@
         <setting id="numhk" label="Num HK" type="text" default="0000" visible="eq(-1,true)"/>
         <setting label="DataBase HK²" type="lsep" />
         <setting id="actifnewpaste" label="Activer Médiathéque HK²" type="bool" default="false" />
-        <setting id="heberg" label="Hébergeur liste DB" type="labelenum" values="Anotepad|Pastebin|Rentry|Textup" default="Anotepad"  visible="eq(-1,true)"/>
+        <setting id="heberg" label="Hébergeur liste DB" type="labelenum" values="Anotepad|Pastebin|Rentry|Textup|fichier" default="Anotepad"  visible="eq(-1,true)"/>
         <setting id="numHeberg" label="Numero Anotepad/Pastebin/Rentry/Textup" type="text" default="" visible="eq(-2,true)"/>
         <setting label="Ajouter contenu" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=folderPastebin&maj=false)" visible="eq(-3,true)"/>
         <setting label="Reset database" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=resetBDhkNew)" visible="eq(-4,true)"/>
@@ -72,8 +72,11 @@
     <!-- Installation avancée -->
     <category label="Installation avancée">
         <setting label="Maj HK² & HK" type="lsep" />
-        <setting label="Mise en place de la MAJ au restart KODI" type="action" option="close" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=mepautostart)"/>
         <setting id="majhk2" label="Activer la MAJ au restart" type="bool" default="false" />
+        <setting label="Mise en place de la MAJ au restart KODI" type="action" option="close" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=mepautostart)"/>
+        <setting id="intmaj" label="Interval (mins) Service de MAJ (0=desactivé)" type="labelenum" values="0|15|30|45|60" default="30"/>
+        <setting label="Mise en place service de MAJ" type="action" option="close" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=mepautostart2)"/>
+        <setting id="delaimaj" label="Delai 1er MAJ (mins)" type="number" default="0"/>
         <setting label="Base de données" type="lsep" />
         <setting id="skinhk" label="Num Skin HK" type="text" default="4j82p"/>
         <setting id="epg" label="EPG" type="text" default="lk4Xb"/>
@@ -137,5 +140,5 @@
         <setting label="Bande Annonce" type="lsep" />
         <setting id="numba" label="Numero" type="text" default="1yjXN"/>
     </category>
-    
+
 </settings>

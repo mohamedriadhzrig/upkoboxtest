@@ -43,8 +43,34 @@ except ImportError:
     # Python 2
     from HTMLParser import HTMLParser
 
+class MyDialog(pyxbmct.AddonDialogWindow):
+    def __init__(self, title="test"):
+        #super(MyDialog, self).__init__(title)
+        #self.setGeometry(800, 560, 50, 30)
+        self._monitor = xbmc.Monitor()
+        self._player = xbmc.Player()
+        
+    def play(self, path):
+        self._player.play(path)
+        xbmc.sleep(200)  # Wait for the player to start, adjust the timeout if necessary
+        self.close()
+        while self._player.isPlaying():
+            if self._monitor.waitForAbort(1):
+                raise SystemExit
+        self.doModal()
 
+class FenIptvold(pyxbmct.AddonFullWindow):
 
+    def __init__(self, *argvs):
+        notice(argvs)
+        super(FenIptv, self).__init__(argvs[0])
+        self.setGeometry(700, 450, 9, 4)
+        self.setBackground(back)
+        self.set_info_controls()
+        self.set_active_controls()
+        self.set_navigation()
+        # Connect a key action (Backspace) to close the window.
+        self.connect(pyxbmct.ACTION_NAV_BACK, self.close)
 
 
 class FenIptv(pyxbmct.AddonDialogWindow):
@@ -54,6 +80,7 @@ class FenIptv(pyxbmct.AddonDialogWindow):
         # Call the base class' constructor.
         super(FenIptv, self).__init__(title)
         # Set width, height and the grid parameters
+        #self.setBackground(back)
         self.chaines = chaines
         self.epg = epg
         self.setGeometry(1200, 620, 50, 30)
@@ -129,7 +156,6 @@ class FenIptv(pyxbmct.AddonDialogWindow):
                                pyxbmct.ACTION_MOUSE_MOVE],
                               self.chaine_update)
 
-        
         #overview
         #labelSynop = pyxbmct.Label('SYNOPSIS', textColor=colorMenu)
         #self.placeControl(labelSynop, 14, 0, columnspan=10)
@@ -278,11 +304,14 @@ class FenIptv(pyxbmct.AddonDialogWindow):
         self.nomTVA.setText(nomTV)
         self.synopA.setText(plot)
         
+    def getChaine(self):
+        nom = self.menu.getListItem(self.menu.getSelectedPosition()).getLabel()
+        chaine = [x for x in self.chaines if nom == x[1]]
+        notice(chaine)
         
     def set_navigation(self):
         """Set up keyboard/remote navigation between controls."""
         pass
-        
         """
         self.menu.controlUp(self.radiobutton)
         #self.menu.controlDown(self.tabCast[0])
@@ -314,15 +343,21 @@ class FenIptv(pyxbmct.AddonDialogWindow):
         mac = str.upper(ADDON.getSetting("mac1"))
         token = ADDON.getSetting("token1")
         iptv = IPTVMac(site, mac, token)
+        notice(site)
+        notice(mac)
+        notice(token)
         notice(chaine)
         linkCMD = unquote(chaine[0][0])
         if "localhost" not in linkCMD and "http" in linkCMD:
             link = linkCMD.split(" ")[1]
         else:
-            cmd = quote(linkCMD) 
-            link = iptv.getInfos(iptv.createLink.format(cmd)).json()["js"]["cmd"].split(" ")[1]
+            cmd = quote(linkCMD)
+            #notice(cmd)
+            link = iptv.getInfos(iptv.createLink.format(linkCMD)).json()["js"]["cmd"].split(" ")[1]
         result = {"url": link + "|User-Agent=Mozilla", "title": chaine[0][1]}
         if result and "url" in result.keys():
             listIt = createListItemFromVideo(result)
             xbmc.Player().play(link, listIt)
-        self.close()
+            #mplay = MyDialog()
+            #mplay.play(link)
+        #self.close()

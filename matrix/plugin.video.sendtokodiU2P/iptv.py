@@ -29,6 +29,25 @@ try:
     BDBOOKMARK = xbmcvfs.translatePath('special://home/userdata/addon_data/plugin.video.sendtokodiU2P/iptv.db')
 except: pass
 
+import pyxbmct
+
+
+class MyDialog(pyxbmct.AddonDialogWindow):
+    def __init__(self):
+        #self.setGeometry(1000, 560, 50, 30)
+        self._monitor = xbmc.Monitor()
+        self._player = xbmc.Player()
+        #self.connect(pyxbmct.ACTION_NAV_BACK, self.close)
+        
+    def play(self, path):
+        self._player.play(path)
+        xbmc.sleep(200)  # Wait for the player to start, adjust the timeout if necessary
+        self.close()
+        while self._player.isPlaying():
+            if self._monitor.waitForAbort(1):
+                raise SystemExit
+        self.doModal()
+
 class BookmarkIPTV:
 
     def __init__(self, database):
@@ -450,6 +469,7 @@ class IPTVMac:
         self.genreUrl = "/portal.php?type=itv&action=get_genres&JsHttpRequest=1-xml"
         self.genreUrlVod =  "/server/load.php?action=create_link&type=vod&cmd={}&JsHttpRequest=1-xml"
         self.listGenreUrl = "/portal.php?type={}&action=get_ordered_list&genre={}&force_ch_link_check=&fav=0&sortby=number&hd=0&p={}&from_ch_id=0&JsHttpRequest=1-xml"
+        #self.listGenreUrl = "/portal.php?type={}&action=get_ordered_list&category={}&force_ch_link_check=&fav=0&sortby=number&hd=0&p={}&from_ch_id=0&JsHttpRequest=1-xml"
         self.catUrl = "/portal.php?type={}&action=get_categories&JsHttpRequest=1-xml"  #vod ou series
         self.createLink = "/portal.php?type=itv&action=create_link&cmd={}&series=0&forced_storage=false&disable_ad=false&download=false&force_ch_link_check=false&JsHttpRequest=1-xml"
         self.createLinkVod = "/server/load.php?action=create_link&type={}&cmd={}&JsHttpRequest=1-xml" 
@@ -476,6 +496,7 @@ class IPTVMac:
             print("proxi")
             info = requests.get(self.urlBase + compUrl, proxies=self.proxyDict, headers=self.headers)
         else: 
+
             info = requests.get(self.urlBase + compUrl, headers=self.headers)
         return info
 
@@ -541,7 +562,9 @@ class IPTVMac:
     def listeChaines(self, typ, genre):
         i = 1
         #'allow_local_timeshift': '1'
+        #notice(self.urlBase + self.listGenreUrl.format(typ, genre, i))
         page = self.getInfos(self.listGenreUrl.format(typ, genre, i)).json()
+        #notice("recup 1ere page (%s): "%genre + str(page))
         self.chaines = [(chaine["cmd"], chaine["name"], chaine["id"], chaine["logo"]) for chaine in page["js"]["data"]]
         nbItems = page["js"]["total_items"]
         itemsPage = page["js"]["max_page_items"]
@@ -897,6 +920,7 @@ def addDirectoryGroupe(name, isFolder=True, parameters={}):
             commands.append(('[COLOR yellow]Correction Heure EPG[/COLOR]', 'RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=gestFuseau&fourn=%s)' %(parameters["fourn"])))
     if commands:
         li.addContextMenuItems(commands)
+    #notice(parameters)
     url = sys.argv[0] + '?' + urlencode(parameters)
     return xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=url, listitem=li, isFolder=isFolder)
 
@@ -1310,7 +1334,7 @@ def IPTVfav():
         li.addContextMenuItems(commands)
         parameters={"action": "playMediaIptv", "lien": link, "iptv": nom.split("|")[-1].strip(), "fourn": fournisseur}  
         url = sys.argv[0] + '?' + urlencode(parameters)
-        xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=url, listitem=li, isFolder=False)               
+        xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=url, listitem=li, isFolder=True)               
     xbmcplugin.endOfDirectory(handle=HANDLE, succeeded=True, cacheToDisc=True)
      
 
@@ -1379,7 +1403,7 @@ def affChaines(params):
                 li.setArt({'thumb': thumb})
             else:
                 li.setArt({'thumb': poster})
-            li.setProperty('IsPlayable', 'true')
+            li.setProperty('IsPlayable', 'false')
             infChaine = [chaine[0], chaine[1].split("|")[-1].strip(), chaine[2], chaine[3], numId, fournisseur]
             commands = []
             commands.append(('[COLOR yellow]Programmes[/COLOR]', 'RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=affepgChann&channelId=%s&title=%s&fourn=%s)' %(chaine[2], chaine[1].split("|")[-1].strip(), fournisseur)))
@@ -1464,6 +1488,7 @@ def playMedia(params):
     fournisseur = params["fourn"]
     bd = BookmarkIPTV(BDBOOKMARK)
     site, mac, token = bd.recupToken(fournisseur)[0]
+    notice(site)
     #site = ADDON.getSetting("site1")
     #mac = str.upper(ADDON.getSetting("mac1"))
     #token = ADDON.getSetting("token1")
@@ -1499,6 +1524,10 @@ def playMedia(params):
         if xbmc.Player().isPlaying():
             xbmc.Player().stop()
         listIt = createListItemFromVideo(result)
-        xbmcplugin.setResolvedUrl(HANDLE, True, listitem=listIt)
+        #mplay = MyDialog()
+        #mplay.play(result["url"])
+        #xbmcplugin.setResolvedUrl(HANDLE, True, listitem=listIt)
+        #notice(result["url"])
+        xbmc.Player().play(result["url"], listitem=listIt)
 if __name__ == '__main__':
   pass

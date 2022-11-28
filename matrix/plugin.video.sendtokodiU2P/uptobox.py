@@ -5,7 +5,7 @@ import re
 import io
 import time
 import sys
-import unicodedata 
+import unicodedata
 import threading
 import json
 from medias import Media, TMDB
@@ -15,9 +15,9 @@ import widget
 from apiTraktHK import TraktHK
 pyVersion = sys.version_info.major
 pyVersionM = sys.version_info.minor
-if pyVersionM == 7:
-    import cryptPaste7 as cryptage
-    import scraperUPTO7 as scraperUPTO 
+if pyVersionM == 11:
+    import cryptPaste11 as cryptage
+    import scraperUPTO11 as scraperUPTO
 elif pyVersionM == 8:
     #import pasteCrypt3 as cryptage
     import cryptPaste8 as cryptage
@@ -68,7 +68,7 @@ class RenameMedia:
                 nameFinal = name
 
             return [nameFinal, year]
-                        
+
         else:
             for m in ["_", " ", "[", "]", "-", "(", ")", "{", "}"]:
                 name = name.replace(m, ".")
@@ -81,25 +81,25 @@ class RenameMedia:
                 year = r.group("year")
             else:
                 year = 0
-        
+
             if year:
                 name = name.replace(year, "")
-            masques = [r'[sS](?P<saison>\d?\d)\.?((?i)ep?)\.?(?P<episode>\d\d\d\d)\.',
-                       r'[sS](?P<saison>\d?\d)\.?((?i)ep?)\.?(?P<episode>\d?\d?\d)\.',
-                       r'(?P<saison>\d?\d)\.?((?i)x)\.?(?P<episode>\d?\d?\d)\.',
-                       r'(\.)((?i)ep?)\.?(?P<episode>\d?\d?\d)\.',
-                       r'((?i)part)\.?(?P<episode>\d)\.',
-                       r'((?i)dvd)\.?(?P<episode>\d)\.',
-                       r'((?i)Saison)\.?(?P<saison>\d?\d)\.?((?i)Episode|e)\.?(?P<episode>\d?\d)\.',
-                       r'[sS](?P<saison>\d?\d)\.?((?i)ep?)\.?(?P<episode>\d?\d?\d)',
-                       r'((?i)ep?)\.?(?P<episode>[0-1][0-8]\d\d)\.',
-                       r'((?i)ep?)\.?(?P<episode>\d?\d?\d)',
+            masques = [r'[sS](?P<saison>\d?\d)\.?(ep?)\.?(?P<episode>\d\d\d\d)\.',
+                       r'[sS](?P<saison>\d?\d)\.?(ep?)\.?(?P<episode>\d?\d?\d)\.',
+                       r'(?P<saison>\d?\d)\.?(x)\.?(?P<episode>\d?\d?\d)\.',
+                       r'(\.)(ep?)\.?(?P<episode>\d?\d?\d)\.',
+                       r'(part)\.?(?P<episode>\d)\.',
+                       r'(dvd)\.?(?P<episode>\d)\.',
+                       r'(Saison)\.?(?P<saison>\d?\d)\.?(Episode|e)\.?(?P<episode>\d?\d)\.',
+                       r'[sS](?P<saison>\d?\d)\.?(ep?)\.?(?P<episode>\d?\d?\d)',
+                       r'(ep?)\.?(?P<episode>[0-1][0-8]\d\d)\.',
+                       r'(ep?)\.?(?P<episode>\d?\d?\d)',
                        r'(?P<episode>[0-1][0-8]\d\d)',
                        r'(?P<episode>\d?\d?\d)',
                        ]
-            
+
             for motif in masques:
-                r = re.search(motif, name)
+                r = re.search(motif, name, re.I)
                 if r:
                     try:
                         try:
@@ -111,34 +111,34 @@ class RenameMedia:
                             numEpisode = "S%sE%s" %(saison, r.group("episode").zfill(4))
                         except:
                             numEpisode = ""
-                       
+
                     except Exception as e:
                         print(e)
-                    nameFinal = name[:r.start()]                    
+                    nameFinal = name[:r.start()]
                     break
             if r:
                 return [nameFinal, saison, numEpisode, year]
             else:
                 return [name, "", "", year]
-    
+
     def correctNom(self, title, tabRep=[]):
         title = unquote(title, encoding='latin-1', errors='replace')
         title = unicodedata.normalize('NFD', title).encode('ascii','ignore').decode("latin-1")
-        tab_remp = [r'''\(.*\)|_|\[.*\]| FR |(?i)Episode| {2,}''', ' ']
-        title = re.sub(tab_remp[0], tab_remp[1], title)
+        tab_remp = [r'''\(.*\)|_|\[.*\]| FR |Episode| {2,}''', ' ']
+        title = re.sub(tab_remp[0], tab_remp[1], title, flags=re.I)
         for repl in tabRep:
                 title = title.replace(repl[0], repl[1])
-        title = re.sub(r"^ \.?", "", title)
-        title = re.sub(r"\.{2,}", ".", title)
-        title = re.sub(r" {2,}", " ", title)
-        return title       
+        title = re.sub(r"^ \.?", "", title, flags=re.I)
+        title = re.sub(r"\.{2,}", ".", title, flags=re.I)
+        title = re.sub(r" {2,}", " ", title, flags=re.I)
+        return title
 
     def nettNom(self, title, tabRep=[]):
         title = unquote(title, encoding='latin-1', errors='replace')
         title = unicodedata.normalize('NFD', title).encode('ascii','ignore').decode("latin-1")
         for repl in tabRep:
             title = title.replace(repl[0], repl[1])
-        return title     
+        return title
 
 class BookmarkUpto:
 
@@ -170,7 +170,7 @@ class BookmarkUpto:
         cur.execute("REPLACE INTO lock (repo, lock) VALUES (?, ?)", (repo, lock, ))
         cnx.commit()
         cur.close()
-        cnx.close 
+        cnx.close
 
     def getLockGroupe(self):
         cnx = sqlite3.connect(self.database)
@@ -179,7 +179,7 @@ class BookmarkUpto:
         liste = [x[0] for x in cur.fetchall()]
         cnx.commit()
         cur.close()
-        cnx.close 
+        cnx.close
         return liste
 
     def insertSeries(self, repo, tab):
@@ -194,7 +194,7 @@ class BookmarkUpto:
                 cur.execute("UPDATE series SET actif=1 WHERE repo=? and rep=?", (repo, t[0],))
         cnx.commit()
         cur.close()
-        cnx.close    
+        cnx.close
 
     def getSeries(self, repo, limit, offset):
         cnx = sqlite3.connect(self.database)
@@ -203,8 +203,8 @@ class BookmarkUpto:
         cur.execute(sql)
         liste = cur.fetchall()
         cur.close()
-        cnx.close    
-        return liste                           
+        cnx.close
+        return liste
 
 class Uptobox:
 
@@ -216,7 +216,7 @@ class Uptobox:
         self.tabFolder = []
 
     def getFileFolderPublic(self, folder="", hash="", limit=100, offset=0):
-        """extract info folder upto publique""" 
+        """extract info folder upto publique"""
         tabMedia = []
         url = self.baseurl + "/api/user/public?folder={}&hash={}&limit={}&offset={}".format(folder, hash, limit, offset)
         data = self.getDataJson(url)
@@ -226,7 +226,7 @@ class Uptobox:
         return tabMedia
 
     def getFileFolderPublicAll(self, folder="", hash=""):
-        """extract info folder upto publique""" 
+        """extract info folder upto publique"""
         i, j = 100, 0
         tabMedia = []
         while 1:
@@ -247,7 +247,7 @@ class Uptobox:
         if nbFile > 100:
             nbFile = 100
         tabFile = []
-         
+
         tabFolder = []
         url = self.baseurl + "/api/user/files?token=%s&path=%s&limit=%d&offset=%d" %(self.key, rep, nbFile, offset)
         try:
@@ -256,13 +256,13 @@ class Uptobox:
                 for file in data['data']["files"]:
                     tabFile.append((file["file_name"], file["file_code"]))
         except Exception as e:
-            sys.exit() 
-        tabFolderChild = [(folder["fullPath"], folder["name"], folder["fld_id"]) for folder in data['data']["folders"]]  
+            sys.exit()
+        tabFolderChild = [(folder["fullPath"], folder["name"], folder["fld_id"]) for folder in data['data']["folders"]]
         try:
             tabFolder = (rep, data['data']['currentFolder']["name"], nbFile, data['data']['currentFolder']["fld_id"], tabFile, tabFolderChild)
         except:
             tabFolder = (rep, "racine", nbFile, data['data']['currentFolder']["fld_id"], tabFile, tabFolderChild)
-        return tabFolder 
+        return tabFolder
 
     def singleFolderMyUpto(self, rep="//", nbFileTotal=20, offset=0):
         """extraction infos rep + fichiers"""
@@ -279,21 +279,21 @@ class Uptobox:
                     for file in data['data']["files"]:
                         tabFile.append((file["file_name"], file["file_code"]))
             except Exception as e:
-                sys.exit() 
+                sys.exit()
             nbFile -= 100
             nbFileTotal -= 100
             offset += 100
             if nbFile < 0:
                 break
-            
-        tabFolderChild = [(folder["fullPath"], folder["name"], folder["fld_id"]) for folder in data['data']["folders"]]  
+
+        tabFolderChild = [(folder["fullPath"], folder["name"], folder["fld_id"]) for folder in data['data']["folders"]]
         try:
             tabFolder = (rep, data['data']['currentFolder']["name"], nbFile, data['data']['currentFolder']["fld_id"], tabFile, tabFolderChild)
         except:
             tabFolder = (rep, "racine", nbFile, data['data']['currentFolder']["fld_id"], tabFile, tabFolderChild)
-        return tabFolder 
-    
-    
+        return tabFolder
+
+
     def singleFolderFolder(self, rep="//", nbFolder=20, offset=0):
         """extraction infos rep"""
         tabFolder = []
@@ -301,15 +301,15 @@ class Uptobox:
         try:
             data = self.getDataJson(url)
         except Exception as e:
-            sys.exit() 
-        
+            sys.exit()
+
         tabFolderChild = [(folder["fullPath"], folder["name"], folder["fld_id"]) for folder in data['data']["folders"]]
         return tabFolderChild
 
     def nbFilesRep(self, rep="//"):
         """ renvoi le nombre de fichier dans un repertoire """
         i = 5
-        j = 0 
+        j = 0
         url = self.baseurl + "/api/user/files?token=%s&path=%s&limit=%d&offset=%d" %(self.key, rep, i, j)
         data = self.getDataJson(url)
         try:
@@ -419,11 +419,11 @@ class Alldedrid:
                 statut = "success"
             else:
                 statut = dict_liens["error"]["code"]
-        except: 
+        except:
             dlLink = ""
-            statut = "err"           
+            statut = "err"
         return dlLink, statut
-        
+
 #===================================================================================== fonctions ==========================================================================
 def actifTrakt():
     trk = None
@@ -495,7 +495,7 @@ def loadSeriesUpto(params):
                 r = re.search(r"(?P<name>.*)\((?P<year>\d*)\)", nom)
                 if r:
                     year = r.group("year").strip()
-                    nom = r.group("name").strip()                    
+                    nom = r.group("name").strip()
                 else:
                     year = 0
                 threading.Thread(name="tet", target=mDB.searchTVshow, args=(nom, rep, i, int(year),)).start()
@@ -516,7 +516,7 @@ def verifLock(repo):
             if d == "x2015x":
                 ok = True
                 ADDON.setSetting("passtmp", "ok")
-            else: 
+            else:
                 ok = False
                 ADDON.setSetting("passtmp", "ko")
     else:
@@ -534,7 +534,7 @@ def lockRep(params):
         if d == "x2015x":
             bd.lockGroupe(repo, 0)
         else:
-            return 
+            return
     else:
         bd.lockGroupe(repo)
 
@@ -581,7 +581,7 @@ def loadFoldersPub(params):
                             else:
                                 medias.append((i, nom, nom1, 0, '', 0, repo, 0.0, '', '', 0, 0))
                     else:
-                        medias = [(i, x[0], x[1], 0, '', 0, repo, 0.0, '', '', 0, 0) for i, x in enumerate(liste)]    
+                        medias = [(i, x[0], x[1], 0, '', 0, repo, 0.0, '', '', 0, 0) for i, x in enumerate(liste)]
                 else:
                     medias = [(i, x[0], x[1], 0, '', 0, repo, 0.0, '', '', 0, 0) for i, x in enumerate(liste)]
             else:
@@ -636,10 +636,10 @@ def affUptoboxSeriesFolderPub(typM, medias, params=""):
                 med = Media("movie", *media)
         if typM == "tvshows":
             ok = addDirectoryUptobox("%s" %(med.title), isFolder=True, parameters={"action": "affSaisonUptofoldercrypt", "u2p": med.numId}, media=med)
-        elif typM == "files":                
+        elif typM == "files":
             ok = addDirectoryUptobox(med.title, isFolder=True, parameters={"action": "affFoldercryptDivers", "nom": med.title, "repo": med.genre}, media=med)
         else:
-            ok = addDirectoryUptobox("%s" %(med.title), isFolder=True, parameters={"action": "affdetailfilmpoiss", "lien": med.link, "u2p": med.numId}, media=med)  
+            ok = addDirectoryUptobox("%s" %(med.title), isFolder=True, parameters={"action": "affdetailfilmpoiss", "lien": med.link, "u2p": med.numId}, media=med)
 
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_UNSORTED)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
@@ -647,7 +647,7 @@ def affUptoboxSeriesFolderPub(typM, medias, params=""):
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_VIDEO_RATING)
     if i > -1:
         if i >= (NBMEDIA - 1):
-            addDirNext(params)            
+            addDirNext(params)
     xbmcplugin.endOfDirectory(handle=HANDLE, succeeded=True, cacheToDisc=True)
 
 def affLiens(numId, typM, liste):
@@ -656,7 +656,7 @@ def affLiens(numId, typM, liste):
     mDB = TMDB(KEYTMDB)
     mDB.movieNumId("liens", 0, numId)
     lFinale = mDB.extractListe[0]
-    #m.title, m.overview, m.year, m.poster, m.numId, m.genre, m.popu, m.backdrop, m.runtime, m.id 
+    #m.title, m.overview, m.year, m.poster, m.numId, m.genre, m.popu, m.backdrop, m.runtime, m.id
     #(0, 'Miranda Veil', '', 2020, '/mpYUoSS7TyxtaMEaTb88LaQTuR2.jpg', 744428, 'Horreur, Fantastique', 6.0, 'IBSfuEFS2@otWGG54PdCj9#1080.Light.VOSTFR.WEBRIP', None, 0, 0)
     movie = [lFinale[1], lFinale[2], lFinale[3], lFinale[4], lFinale[5], lFinale[6], lFinale[7], "", 0, lFinale[5]]
     for l in liste:
@@ -726,7 +726,7 @@ def getEpisodesSaison(numId):
     except:
         vus = []
     vus = [("Saison %s" %x.split("-")[1].zfill(2), x.split("-")[2]) for x in vus if x.split("-")[0] == str(numId)]
-    
+
     cnx = sqlite3.connect(BDREPONEW)
     cur = cnx.cursor()
     cur.execute('SELECT folder, hsh FROM seriesfolderHash WHERE numId={}'.format(numId))
@@ -746,7 +746,7 @@ def getEpisodesSaison(numId):
                 liste.append(("Saison %s" %n[1], int(n[2].split("E")[1])))
             except:
                 notice(n)
-    
+
     dictSaisons = {}
     for saison in list(set([x[0] for x in liste])):
         nbTotal = len([x for x in list(set(liste)) if x[0] == saison])
@@ -763,26 +763,26 @@ def getEpisodesSaison(numId):
 def loadSaisonsUptoFolderCrypt(params):
     typMedia = "tvshow"
     numId = params["u2p"]
-    
+
     choixsaisons = []
     mDB = TMDB(KEYTMDB)
-    dictSaison = mDB.serieNumIdSaison(numId)   
-    
+    dictSaison = mDB.serieNumIdSaison(numId)
+
     dictSaisonsVU, tabFiles = getEpisodesSaison(numId)
-    
+
     dictEpisodesSaison = {}
     if tabFiles:
         for saison in sorted(list(set([x[0] for x in tabFiles]))):
             dictEpisodesSaison[saison] = [x[1:] for x in tabFiles if x[0] == saison]
             #notice(dictEpisodesSaison[saison])
             r = re.search(r"(?P<num>\d+)", saison)
-            if r: 
+            if r:
                 numSaison = int(r.group('num'))
                 infos = dictSaison.get(numSaison, ('Saison %d' %numSaison, None, 'Pas de Synopsis....'))
                 #Înotice(infos)
                 sTmp = "Saison %s" %str(numSaison).zfill(2)
                 choixsaisons.append(("%s [COLOR %s](%d/%d)[/COLOR]" %(infos[0], dictSaisonsVU[sTmp][0], dictSaisonsVU[sTmp][1], dictSaisonsVU[sTmp][2]), \
-                    {"action": "visuEpisodesFolderCrypt", "u2p": numId, "saison": numSaison, "newhk": "1", "episodes": str(dictEpisodesSaison[saison])})) 
+                    {"action": "visuEpisodesFolderCrypt", "u2p": numId, "saison": numSaison, "newhk": "1", "episodes": str(dictEpisodesSaison[saison])}))
     xbmcplugin.setPluginCategory(HANDLE, "Menu")
     xbmcplugin.setContent(HANDLE, 'episodes')
     categories = [("[COLOR red]Bande Annonce[/COLOR]", {"action": "ba", "u2p": numId, "typM": typMedia})] + choixsaisons + \
@@ -792,13 +792,13 @@ def loadSaisonsUptoFolderCrypt(params):
 
     #liste lastview
     if ADDON.getSetting("bookonline") != "false":
-        listeView = widget.responseSite("http://%s/requete.php?name=%s&type=view&media=tv" %(ADDON.getSetting("bookonline_site"), ADDON.getSetting("bookonline_name")))    
+        listeView = widget.responseSite("http://%s/requete.php?name=%s&type=view&media=tv" %(ADDON.getSetting("bookonline_site"), ADDON.getSetting("bookonline_name")))
         listeView = [int(x) for x in listeView]
     else:
         listeView = list(widget.extractIdInVu(t="tvshow"))
     if int(numId) in listeView:
         categories.append(("Retirer Last/View", {"action": "supView", "u2p": numId, "typM": typMedia}))
-    
+
     #liste favs
     if ADDON.getSetting("bookonline") != "false":
         listeM = widget.responseSite("http://%s/requete.php?name=%s&type=favs&media=tvshow" %(ADDON.getSetting("bookonline_site"), ADDON.getSetting("bookonline_name")))
@@ -809,9 +809,9 @@ def loadSaisonsUptoFolderCrypt(params):
         categories.append(("Retirer fav's-HK", {"action": "fav", "mode": "sup", "u2p": numId, "typM": "tvshow"}))
     else:
         categories.append(("Ajouter fav's-HK", {"action": "fav", "mode": "ajout", "u2p": numId, "typM": "tvshow"}))
-    
+
     for cat in categories:
-        if "saison" in cat[1].keys(): 
+        if "saison" in cat[1].keys():
             numSaison = cat[1]["saison"]
             try:
                 tab = dictSaison.get(numSaison, ('Saison %d' %numSaison, None, 'Pas de Synopsis....'))
@@ -823,7 +823,7 @@ def loadSaisonsUptoFolderCrypt(params):
             media.saison = numSaison
             media.typeMedia = typMedia
         else:
-            media = ""        
+            media = ""
         addDirectoryMenu(cat[0], isFolder=True, parameters=cat[1], media=media)
     xbmcplugin.endOfDirectory(handle=HANDLE, succeeded=True)
 
@@ -836,30 +836,30 @@ def loadSaisonsUpto(params):
     except: pass
 
     mDB = TMDB(KEYTMDB)
-    dictSaison = mDB.serieNumIdSaison(numId)   
+    dictSaison = mDB.serieNumIdSaison(numId)
     key = ADDON.getSetting("keyUpto")
     up = Uptobox(key=key)
     choixsaisons = []
     if "tabsaison" in params.keys():
         tabExtract = [("", x, "") for x in params["tabsaison"].split("*")]
-        
+
     else:
         tab = up.singleFolderMyUpto(rep=rep, nbFileTotal=1200, offset=0)
         tabExtract = tab[5]
-        
+
     if tabExtract:
         for rep, saison, num in tabExtract:
             r = re.search(r"(?P<num>\d+)", saison)
-            if r: 
+            if r:
                 numSaison = int(r.group('num'))
                 try:
                     infos = dictSaison[numSaison]
                 except:
                     infos = ('Saison {}'.format(numSaison), '', "pas de synop...")
                 if "tabsaison" in params.keys():
-                    choixsaisons.append((infos[0], {"action": "visuEpisodesUptoPoiss", "u2p": numId, "saison": numSaison}))  
+                    choixsaisons.append((infos[0], {"action": "visuEpisodesUptoPoiss", "u2p": numId, "saison": numSaison}))
                 else:
-                    choixsaisons.append((infos[0], {"action": "visuEpisodesUpto", "u2p": numId, "saison": numSaison, "rep": rep}))        
+                    choixsaisons.append((infos[0], {"action": "visuEpisodesUpto", "u2p": numId, "saison": numSaison, "rep": rep}))
     else:
         tabFiles = []
         renam = RenameMedia()
@@ -868,13 +868,13 @@ def loadSaisonsUpto(params):
             tabFiles.append(("Saison %s" %n[1], int(n[2].split("E")[1]), filecode))
         for saison in sorted(list(set([x[0] for x in tabFiles]))):
             r = re.search(r"(?P<num>\d+)", saison)
-            if r: 
+            if r:
                 numSaison = int(r.group('num'))
                 try:
                     infos = dictSaison[numSaison]
                 except:
                     infos = ('Saison {}'.format(numSaison), '', "pas de synop...")
-                choixsaisons.append((infos[0], {"action": "visuEpisodesUpto", "u2p": numId, "saison": numSaison, "rep": rep, "filtre": "1"}))        
+                choixsaisons.append((infos[0], {"action": "visuEpisodesUpto", "u2p": numId, "saison": numSaison, "rep": rep, "filtre": "1"}))
     xbmcplugin.setPluginCategory(HANDLE, "Menu")
     xbmcplugin.setContent(HANDLE, 'episodes')
     categories = [("[COLOR red]Bande Annonce[/COLOR]", {"action": "ba", "u2p": numId, "typM": typMedia})] + choixsaisons + \
@@ -882,7 +882,7 @@ def loadSaisonsUpto(params):
         ("Similaires", {"action": "suggest", "u2p": numId, "typ": "Similaires","typM": typMedia}), \
         ("Recommandations", {"action": "suggest", "u2p": numId, "typ": "Recommendations", "typM": typMedia})]
     for cat in categories:
-        if "saison" in cat[1].keys(): 
+        if "saison" in cat[1].keys():
             numSaison = cat[1]["saison"]
             try:
                 tab = dictSaison[numSaison]
@@ -894,7 +894,7 @@ def loadSaisonsUpto(params):
             media.saison = numSaison
             media.typeMedia = typMedia
         else:
-            media = ""        
+            media = ""
         addDirectoryMenu(cat[0], isFolder=True, parameters=cat[1], media=media)
     xbmcplugin.endOfDirectory(handle=HANDLE, succeeded=True)
 
@@ -912,7 +912,7 @@ def detailFilmPoiss(params):
                 ("Similaires", {"action": "suggest", "u2p": numId, "typ": "Similaires", "typM": typMedia}), ("Recommandations", {"action": "suggest", "u2p": numId, "typ": "Recommendations", "typM": typMedia})]
     for cat in categories:
         media = Media("movie", *lFinale[1:])
-        media.typeMedia = typMedia        
+        media.typeMedia = typMedia
         addDirectoryMenu(cat[0], isFolder=True, parameters=cat[1], media=media)
     xbmcplugin.endOfDirectory(handle=HANDLE, succeeded=True)
 
@@ -933,7 +933,7 @@ def addDirectoryMenu(name, isFolder=True, parameters={}, media="" ):
     if not isFolder:
         li.setInfo('video', {"title": name})
         li.setProperty('IsPlayable', 'true')
-    
+
     url = sys.argv[0] + '?' + urlencode(parameters)
     return xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=url, listitem=li, isFolder=isFolder)
 
@@ -979,7 +979,7 @@ def extractMedias(limit=0, offset=1, sql="", unique=0):
         cur.execute(sql)
         if unique:
             requete = [x[0] for x in cur.fetchall()]
-        else: 
+        else:
             requete = cur.fetchall()
     cur.close()
     cnx.close()
@@ -1011,7 +1011,7 @@ def ventilationType(tabFiles):
     return sorted(medias)
 
 def regroupeEpisodes(tab, saison):
-    saison = "S" + str(saison).zfill(2) 
+    saison = "S" + str(saison).zfill(2)
     renam = RenameMedia()
     tabTMP = []
     for nom, filecode in tab:
@@ -1056,7 +1056,7 @@ def affEpisodesFolderCrypt(params):
     episodes = ast.literal_eval(params["episodes"])
     typM = "episode"
     #cnx = sqlite3.connect(BDFLDP)
-    
+
     """
     cnx = sqlite3.connect(BDREPONEW)
     cur = cnx.cursor()
@@ -1090,7 +1090,7 @@ def affEpisodesFolderCrypt(params):
             vus = []
         vus = [x for x in vus if x.split("-")[0] == str(numId)]
         #notice(vus)
-        
+
         xbmcplugin.setPluginCategory(HANDLE, "Episodes")
         xbmcplugin.setContent(HANDLE, 'episodes')
         for episode, filecode in sorted(tabExtract):
@@ -1101,7 +1101,7 @@ def affEpisodesFolderCrypt(params):
                 isVu = 0
             #notice(ep)
             #notice(isVu)
-            
+
             numEpisode = int(episode.split("E")[1])
             #"72879"    "Saison 05" "S05E59"    "7UM9cgSAc@TEgCpOiQtH3G#1080P"
             l = [numId, saison, episode, filecode]
@@ -1116,10 +1116,10 @@ def affEpisodesFolderCrypt(params):
             addDirectoryUptobox("E%d - %s" %(numEpisode, media.title), isFolder=False, \
                 parameters={"action": "playHK", "lien": media.link, "u2p": media.numId, "episode": media.episode, "saison": media.saison}, media=media)
         xbmcplugin.endOfDirectory(handle=HANDLE, succeeded=True)
-   
+
 
 def affEpisodesUpto(params):
-    numId = params["u2p"]  
+    numId = params["u2p"]
     saison = params["saison"]
     rep = params["rep"]
     key = ADDON.getSetting("keyUpto")
@@ -1179,7 +1179,7 @@ def affEpisodesUptoPoissRelease(numId, saison, liste):
                   'icon': ADDON.getAddonInfo('icon'),
                   'fanart': ADDON.getAddonInfo('fanart')})
         url = sys.argv[0] + '?' + urlencode(parameters)
-        xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=url, listitem=li, isFolder=True)        
+        xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=url, listitem=li, isFolder=True)
     xbmcplugin.endOfDirectory(handle=HANDLE, succeeded=True)
 
 def affEpisodesUptoPoiss(numId, saison, liste, release):
@@ -1223,14 +1223,14 @@ def affUptoboxSeries(typM, medias, params=""):
             med = Media("movie", *media[:-1])
         except:
             med = Media("movie", *media)
-        ok = addDirectoryUptobox("%s" %(med.title), isFolder=True, parameters={"action": "affSaisonUpto", "rep": quote(med.link), "u2p": med.numId}, media=med)                
+        ok = addDirectoryUptobox("%s" %(med.title), isFolder=True, parameters={"action": "affSaisonUpto", "rep": quote(med.link), "u2p": med.numId}, media=med)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_UNSORTED)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_TITLE)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_VIDEO_RATING)
     if i > -1:
         if i >= (NBMEDIA - 1):
-            addDirNext(params)            
+            addDirNext(params)
     xbmcplugin.endOfDirectory(handle=HANDLE, succeeded=True, cacheToDisc=True)
 
 def magnets(params):
@@ -1289,7 +1289,7 @@ def affUptobox(typM, medias, params=""):
             media = Media(typM, *media)
         if "*" in media.link:
             paramsIn = dict(parse_qsl(media.link.split("*")[1]))
-            ok = addDirectoryUptobox("%s" %(media.title), isFolder=False, parameters=paramsIn, media=media)                
+            ok = addDirectoryUptobox("%s" %(media.title), isFolder=False, parameters=paramsIn, media=media)
         else:
             delF = "ko"
             if "rep" in params.keys() and params["rep"] == "//":
@@ -1297,14 +1297,14 @@ def affUptobox(typM, medias, params=""):
             if " (S" in media.title:
                 ok = addDirectoryUptobox("%s" %(media.title), isFolder=False, parameters={"action": "playMediaUptobox", "lien": media.link, "u2p": media.numId, "typM": media.title.split(" ")[-1], "delF": delF}, media=media)
             else:
-                ok = addDirectoryUptobox("%s" %(media.title), isFolder=False, parameters={"action": "playMediaUptobox", "lien": media.link, "u2p": media.numId, "delF": delF}, media=media)                
+                ok = addDirectoryUptobox("%s" %(media.title), isFolder=False, parameters={"action": "playMediaUptobox", "lien": media.link, "u2p": media.numId, "delF": delF}, media=media)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_UNSORTED)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_TITLE)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_VIDEO_RATING)
     if i > -1:
         if i >= (NBMEDIA - 1):
-            addDirNext(params)            
+            addDirNext(params)
     xbmcplugin.endOfDirectory(handle=HANDLE, succeeded=True, cacheToDisc=True)
 
 def affUptoboxNews(typM, medias, params="", cr=0):
@@ -1318,22 +1318,22 @@ def affUptoboxNews(typM, medias, params="", cr=0):
             media = Media(typM, *media)
         if "*" in media.link and not cr:
             paramsIn = dict(parse_qsl(media.link.split("*")[1]))
-            ok = addDirectoryUptobox("%s" %(media.title), isFolder=False, parameters=paramsIn, media=media)                
+            ok = addDirectoryUptobox("%s" %(media.title), isFolder=False, parameters=paramsIn, media=media)
         else:
             if " (S" in media.title:
                 ok = addDirectoryUptobox("%s" %(media.title), isFolder=False, parameters={"action": "playHK", "lien": media.link, "u2p": media.numId, "typM": media.title.split(" ")[-1]}, media=media)
             else:
                 if media.numId:
-                    ok = addDirectoryUptobox("%s" %(media.title), isFolder=True, parameters={"action": "affdetailfilmpoiss", "lien": media.link, "u2p": media.numId}, media=media)               
+                    ok = addDirectoryUptobox("%s" %(media.title), isFolder=True, parameters={"action": "affdetailfilmpoiss", "lien": media.link, "u2p": media.numId}, media=media)
                 else:
-                    ok = addDirectoryUptobox("%s" %(media.title), isFolder=False, parameters={"action": "playHK", "lien": media.link, "u2p": media.numId}, media=media)                
+                    ok = addDirectoryUptobox("%s" %(media.title), isFolder=False, parameters={"action": "playHK", "lien": media.link, "u2p": media.numId}, media=media)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_UNSORTED)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_TITLE)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_VIDEO_RATING)
     if i > -1:
         if i >= (NBMEDIA - 1):
-            addDirNext(params)            
+            addDirNext(params)
     xbmcplugin.endOfDirectory(handle=HANDLE, succeeded=True, cacheToDisc=True)
 
 def affUptoboxNewsSerie(typM, medias, params=""):
@@ -1345,14 +1345,14 @@ def affUptoboxNewsSerie(typM, medias, params=""):
             media = Media(typM, *media[:-1])
         except:
             media = Media(typM, *media)
-        ok = addDirectoryUptobox("%s" %(media.title), isFolder=True, parameters={"action": "affSaisonUptoPoiss", "u2p": media.numId}, media=media)                
+        ok = addDirectoryUptobox("%s" %(media.title), isFolder=True, parameters={"action": "affSaisonUptoPoiss", "u2p": media.numId}, media=media)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_UNSORTED)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_VIDEO_YEAR)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_TITLE)
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_VIDEO_RATING)
     if i > -1:
         if i >= (NBMEDIA - 1):
-            addDirNext(params)            
+            addDirNext(params)
     xbmcplugin.endOfDirectory(handle=HANDLE, succeeded=True, cacheToDisc=True)
 
 def addDirectoryEpisodes(name, isFolder=True, parameters={}, media="" ):
@@ -1360,7 +1360,7 @@ def addDirectoryEpisodes(name, isFolder=True, parameters={}, media="" ):
     li = xbmcgui.ListItem(label=("%s" %(name)))
     li.setInfo('video', {"title": media.title, 'plot': media.overview, 'genre': media.genre, 'playcount': media.vu, "dbid": media.numId + 500000,
         "year": media.year, 'mediatype': media.typeMedia, "rating": media.popu, "episode": media.episode, "season": media.saison})
-    
+
     li.setArt({'icon': media.backdrop,
               "fanart": media.backdrop})
     li.setProperty('IsPlayable', 'true')
@@ -1373,10 +1373,15 @@ def addDirectoryUptobox(name, isFolder=True, parameters={}, media="" ):
     li.setUniqueIDs({ 'tmdb' : media.numId }, "tmdb")
     li.setInfo('video', {"title": media.title.replace("00_", ""), 'plot': media.overview, 'genre': media.genre, "dbid": int(media.numId) + 500000,
             "year": media.year, 'mediatype': media.typeMedia, "rating": media.popu, "duration": media.duration * 60 })
-    
-    li.setArt({'icon': media.backdrop,
+    if media.poster[-4:] == ".jpg":
+        li.setArt({'icon': media.backdrop,
             'thumb': media.poster,
             'poster': media.poster,
+            'fanart': media.backdrop})
+    else:
+        li.setArt({'icon': media.backdrop,
+            'thumb': media.backdrop,
+            'poster': media.backdrop,
             'fanart': media.backdrop})
     if media.clearlogo :
         li.setArt({'clearlogo': media.clearlogo})
@@ -1394,11 +1399,11 @@ def addDirectoryUptobox(name, isFolder=True, parameters={}, media="" ):
         commands.append(('[COLOR yellow]Retirer Compte Uptobox[/COLOR]', 'RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=delcompte&lien=%s)' %(media.link)))
     if commands:
         li.addContextMenuItems(commands)
-    li.setProperty('IsPlayable', 'true')    
+    li.setProperty('IsPlayable', 'true')
     url = sys.argv[0] + '?' + urlencode(parameters)
     return xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=url, listitem=li, isFolder=isFolder)
 
-def debridLien(link):    
+def debridLien(link):
     ApikeyUpto = ADDON.getSetting("keyUpto")
     if ApikeyUpto:
         up = Uptobox(key=ApikeyUpto)
@@ -1456,7 +1461,7 @@ def playMediabaext(params):
 def addDirNext(params):
     isFolder = True
     li = xbmcgui.ListItem(label="[COLOR red]Page Suivante[/COLOR]")
-    li.setInfo('video', {"title": "     ", 'plot': "", 'genre': "", "dbid": 500000, 
+    li.setInfo('video', {"title": "     ", 'plot': "", 'genre': "", "dbid": 500000,
             "year": "", 'mediatype': "movies", "rating": 0.0})
     li.setArt({
               'thumb': 'special://home/addons/plugin.video.sendtokodiU2P/resources/png/next.png',
@@ -1478,7 +1483,7 @@ def getHistoUpto(bd):
     cnx2.close()
     mDB = TMDB(KEYTMDB)
     for i, media in enumerate(bookmark):
-        params = dict(parse_qsl(media.split("?")[1])) 
+        params = dict(parse_qsl(media.split("?")[1]))
         #notice(params)
         numId = params["u2p"]
         link = params["lien"]
@@ -1493,7 +1498,6 @@ def getHistoUpto(bd):
     testThread()
     medias = mDB.extractListe
     affUptobox("movie", [x[1:]  for x in medias if x[1] != "Inconnu"], params)
-        
+
 if __name__ == '__main__':
     pass
-    

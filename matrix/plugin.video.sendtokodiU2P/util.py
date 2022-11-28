@@ -4,7 +4,7 @@ import os
 import re
 import time
 import sys
-import unicodedata 
+import unicodedata
 import json
 import sqlite3
 import xbmc
@@ -68,7 +68,7 @@ def getBdAnotepad(repo):
         tx = html_parser.unescape(tx)
     except:
         showInfoNotification("pb anotepad pour changer !!!")
-        tx = ""            
+        tx = ""
     return tx
 
 def getBdPastebin(repo):
@@ -79,23 +79,23 @@ def getBdPastebin(repo):
         #notice(tx)
     except:
         showInfoNotification("pb pastebin !!!")
-        tx = ""            
+        tx = ""
     return tx
 
 def getBdRentry(repo):
     try:
-        x = requests.get('https://rentry.org/{}/raw'.format(repo)).content
+        x = requests.get('https://rentry.org/{}/raw'.format(repo), timeout=5).content
         tx = x.decode()
     except:
         showInfoNotification("pb Rentry!!!")
-        tx = ""            
+        tx = ""
     return tx
 
 def getBdTextup(repo):
     try:
         url = "https://textup.fr/{}".format(repo)
-        rec = requests.get(url)
-        
+        rec = requests.get(url, timeout=5)
+
         #motif2 = r"\d+[-_ 0-9a-zA-Z]*\s?=\s?\d+\s?=\s?\w{32}"
         #cpatron = re.compile (motif2)
         #tabDb = cpatron.findall(rec.text, re.MULTILINE)
@@ -108,5 +108,5 @@ def getBdTextup(repo):
         lignes = "\n".join(lignes)
     except:
         showInfoNotification("pb textup!!!")
-        lignes = ""            
+        lignes = ""
     return lignes
