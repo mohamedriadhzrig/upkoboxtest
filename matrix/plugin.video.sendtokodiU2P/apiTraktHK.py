@@ -210,8 +210,40 @@ class ApiTrakt:
         else:
             url = self.baseurl + '/scrobble/stop'
         request = requests.post(url, data=json.dumps(values), headers=self.headers)
-        r = request.json()
-        #print(r)
+        r = self.getDataJson(url, values)
+        return r
+
+    def getDataJson(self, url, values, nbTest=1):
+        """reconnection error json"""
+        try:
+            r = requests.post(url, data=json.dumps(values), headers=self.headers)
+            data = json.loads(r.text)
+        except :
+            time.sleep(0.5 * nbTest)
+            notice("tentative reconnection : %.2fs" % (0.5 * nbTest))
+            nbTest += 1
+            if nbTest > 10:
+                notice("error: reconnection")
+                sys.exit()
+            return self.getDataJson(url, values, nbTest)
+        else:
+            return data
+
+    def getDataJsonGet(self, url, nbTest=1):
+        """reconnection error json"""
+        try:
+            r = requests.get(url, headers=self.headers)
+            data = json.loads(r.text)
+        except :
+            time.sleep(0.5 * nbTest)
+            notice("tentative reconnection : %.2fs" % (0.5 * nbTest))
+            nbTest += 1
+            if nbTest > 10:
+                notice("error: reconnection")
+                sys.exit()
+            return self.getDataJson(url, nbTest)
+        else:
+            return data
 
     def gestionWatchlist(self, numId=[], season=None, number=[], typM="movie", mode="add"):
         """mode add/remove  typm movie/show
@@ -233,7 +265,7 @@ class ApiTrakt:
         notice(r)
 
     def gestionWatchedHistory(self, numId=[], season=None, number=[], typM="movie", mode="add"):
-        """mode add/remove  typm movie/show 
+        """mode add/remove  typm movie/show
         met vu ou non vue"""
         values = {}
         if typM == "movie":
@@ -251,7 +283,7 @@ class ApiTrakt:
         notice(url)
         request = requests.post(url, data=json.dumps(values), headers=self.headers)
         r = request.json()
-        
+
     def history(self, typM="movies"):
         """recup historique des vus"""
         dStart = "2015-06-01T00:00:00.000Z"
@@ -270,7 +302,7 @@ def showInfoNotification(message):
     xbmcgui.Dialog().notification("U2Pplay", message, xbmcgui.NOTIFICATION_INFO, 5000)
 
 class TraktHK(ApiTrakt):
-    
+
     def __init__(self):
         cfg = {
             "client_id": ADDON.getSetting("clientid").strip(),
@@ -281,7 +313,7 @@ class TraktHK(ApiTrakt):
             }
         ApiTrakt.__init__(self, **cfg)
         if not cfg["access_token"]:
-            device, code, url = self.getToken()     
+            device, code, url = self.getToken()
             if device:
                 dialog = xbmcgui.Dialog()
                 ok = dialog.yesno('Validation device Trakt', "Valides le code %s\nsur la page %s\nQuand c'est fait, click sur OUI" %(code, url))
@@ -329,8 +361,7 @@ class TraktHK(ApiTrakt):
 
 
 
-        
 
 
 
-        
+
