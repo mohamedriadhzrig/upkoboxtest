@@ -1323,6 +1323,7 @@ def majContenu():
 
 def menuRepCrypte():
     ADDON.setSetting("passtmp", "")
+    """
     maj = int(ADDON.getSetting("nbHmaj"))
     try:
         h = int(scraperUPTO.lastMaj())
@@ -1330,6 +1331,7 @@ def menuRepCrypte():
         h =0
     if (time.time() - h) > (3600 * maj):
         scraperUPTO.majHkNew()
+    """
     xbmcplugin.setPluginCategory(HANDLE, "Menu")
     addon = xbmcaddon.Addon("plugin.video.sendtokodiU2P")
     choix = [

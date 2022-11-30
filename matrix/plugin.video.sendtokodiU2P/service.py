@@ -63,7 +63,6 @@ if pyVersionM == 11:
     import cryptPaste11 as cryptage
     import scraperUPTO11 as scraperUPTO
 elif pyVersionM == 8:
-    #import pasteCrypt3 as cryptage
     import cryptPaste8 as cryptage
     import scraperUPTO8 as scraperUPTO
     #import scraperUPTO
@@ -78,9 +77,7 @@ else:
     notice(pyVersionM)
 from pastebin import Pastebin
 from apiTraktHK import TraktHK
-#import scraperUPTO
 import createbdhk
-#import cryptPaste as cryptage
 import random
 import uptobox
 
@@ -3345,6 +3342,12 @@ def playMediaHK(params):
 
         nettHistoDB(__database__)
 
+        if os.path.isfile(xbmcvfs.translatePath('special://home/addons/plugin.video.sendtokodiU2P/rskin.txt')) and __addon__.getSetting("rskin"):
+            time.sleep(5)
+            xbmc.executebuiltin('ReloadSkin')
+            time.sleep(0.05)
+            os.remove(xbmcvfs.translatePath('special://home/addons/plugin.video.sendtokodiU2P/rskin.txt'))
+
     return
 
 
@@ -4905,14 +4908,12 @@ if __name__ == '__main__':
     # Get the plugin handle as an integer number.
     __handle__ = int(sys.argv[1])
     #  database video kodi
-    if pyVersion == 2:
-        bdKodi = "MyVideos116.db"
-    else:
-        bdKodi = "MyVideos119.db"
-    try:
-        __database__ = xbmcvfs.translatePath("special://home/userdata/Database/%s" %bdKodi)
-    except:
-        __database__ = xbmc.translatePath("special://home/userdata/Database/%s" %bdKodi)
+    bdKodis = ["MyVideos119.db", "MyVideos121.db"]
+    for bdKodi in bdKodis:
+        if os.path.isfile(xbmcvfs.translatePath("special://home/userdata/Database/%s" %bdKodi)):
+            __database__ = xbmcvfs.translatePath("special://home/userdata/Database/%s" %bdKodi)
+            break
+
     #Deprecated xbmc.translatePath. Moved to xbmcvfs.translatePath
     __repAddon__ = xbmcvfs.translatePath("special://home/addons/plugin.video.sendtokodiU2P/")
     __repAddonData__ = xbmcvfs.translatePath("special://home/userdata/addon_data/plugin.video.sendtokodiU2P")
@@ -4946,16 +4947,6 @@ if __name__ == '__main__':
     #notice(__url__)
     #notice(__handle__)
 
-    #mise a jour
-    #maj = int(ADDON.getSetting("nbHmaj"))
-    """
-    try:
-        h = int(scraperUPTO.lastMaj())
-    except:
-        h = 0
-    if (time.time() - h) > (60):
-        threading.Thread(name="maj", target=scraperUPTO.majHkNewStart).start()
-    """
     router(sys.argv[2][1:])
 
     #Setting most video properties through ListItem.setInfo() is deprecated and might be removed in future Kodi versions. Please use the respective setter in InfoTagVideo.

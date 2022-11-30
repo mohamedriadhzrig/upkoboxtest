@@ -8,7 +8,9 @@ import xbmcaddon
 import xbmcgui
 import xbmcplugin
 import time
-from medias import Media, TMDB
+try:
+  from medias import Media, TMDB
+except: pass
 import sqlite3
 import requests
 import ast
@@ -134,7 +136,7 @@ def initBookmark():
         UNIQUE (numId))
           """)
     cnx.commit()
-    
+
     cur.close()
     cnx.close()
 
@@ -169,7 +171,7 @@ def createRepUptoPublic(*argv):
   cur.close()
   cnx.close()
 
-def extractRepUptoPublic():  
+def extractRepUptoPublic():
   cnx = sqlite3.connect(BDBOOKMARK)
   cur = cnx.cursor()
   cur.execute("""CREATE TABLE IF NOT EXISTS repUpP(
@@ -187,7 +189,7 @@ def extractRepUptoPublic():
   cnx.close()
   return liste
 
-def extractRepUpto():  
+def extractRepUpto():
   cnx = sqlite3.connect(BDBOOKMARK)
   cur = cnx.cursor()
   cur.execute("""CREATE TABLE IF NOT EXISTS repUp(
@@ -259,7 +261,7 @@ def createListTMDB(argv):
   cnx.commit()
   cur.close()
   cnx.close()
-  
+
 
 def insertTrakt(*argv):
   cnx = sqlite3.connect(BDBOOKMARK)
@@ -319,7 +321,7 @@ def extractListPaste():
   liste = cur.fetchall()
   cur.close()
   cnx.close()
-  return liste  
+  return liste
 
 def extractListTMDB():
   cnx = sqlite3.connect(BDBOOKMARK)
@@ -328,8 +330,8 @@ def extractListTMDB():
   liste = cur.fetchall()
   cur.close()
   cnx.close()
-  return liste  
-  
+  return liste
+
 def getListesT(typM="movie"):
   cnx = sqlite3.connect(BDBOOKMARK)
   cur = cnx.cursor()
@@ -347,7 +349,7 @@ def getListesT(typM="movie"):
   cur.close()
   cnx.close()
   return liste
-    
+
 
 def createListeV(nom, media):
   cnx = sqlite3.connect(BDBOOKMARK)
@@ -386,7 +388,7 @@ def getListesV(t):
   liste = [x[0] for x in cur.fetchall()]
   cnx.commit()
   cur.close()
-  cnx.close()    
+  cnx.close()
   return liste
 
 def getListesVdetail(nom, t):
@@ -404,7 +406,7 @@ def getListesVdetail(nom, t):
   liste = [x[0] for x in cur.fetchall()]
   cnx.commit()
   cur.close()
-  cnx.close()    
+  cnx.close()
   return liste
 
 def gestionListeVdetail(nom, numId, t, mode):
@@ -424,8 +426,8 @@ def gestionListeVdetail(nom, numId, t, mode):
     cur.execute("DELETE FROM listesVdetail  WHERE nom=? AND numId=? AND type=?", (nom, numId, t))
   cnx.commit()
   cur.close()
-  cnx.close()    
-  
+  cnx.close()
+
 
 def getCertification(passwd):
     cnx = sqlite3.connect(BDBOOKMARK)
@@ -458,7 +460,7 @@ def testSite(url):
 
 def responseSite(url):
     if "lesalkodiques.com" in  ADDON.getSetting("bookonline_site"):
-      url = "https://lesalkodiques.com/u2pplay/requete.php?%s"  %(url.split("?")[1].strip()) 
+      url = "https://lesalkodiques.com/u2pplay/requete.php?%s"  %(url.split("?")[1].strip())
     resp = requests.get(url)
     data = resp.json()
     return data
@@ -473,7 +475,7 @@ def pushSite(url):
         url = url.replace("http:", "https:")
         resp = requests.get(url)
       except: pass
-    
+
 def getVu(typM="movie"):
     cnx = sqlite3.connect(BDBOOKMARK)
     cur = cnx.cursor()
@@ -730,7 +732,7 @@ def supFavs(numId, t):
     cnx.commit()
     cur.close()
     cnx.close()
-    
+
 def supView(numId, t):
     cnx = sqlite3.connect(BDBOOKMARK)
     cur = cnx.cursor()
@@ -760,7 +762,7 @@ def supView(numId, t):
     cnx.commit()
     cur.close()
     cnx.close()
-    
+
 def extractListe(t="film"):
     cnx = sqlite3.connect(BDBOOKMARK)
     cur = cnx.cursor()
@@ -782,7 +784,7 @@ def extractListe(t="film"):
     cur.close()
     cnx.close()
     return listes
-    
+
 def supListe(liste):
     cnx = sqlite3.connect(BDBOOKMARK)
     cur = cnx.cursor()
@@ -797,10 +799,10 @@ def supListe(liste):
     for l in liste:
         sql = "DELETE FROM listes WHERE title=?"
         cur.execute(sql, (l, ))
-    cnx.commit()    
+    cnx.commit()
     cur.close()
     cnx.close()
-   
+
 def getListe(title, t="film"):
     cnx = sqlite3.connect(BDBOOKMARK)
     cur = cnx.cursor()
@@ -812,7 +814,7 @@ def getListe(title, t="film"):
       UNIQUE (title))
         """)
     cnx.commit()
-    sql = "SELECT sql FROM listes WHERE title=? AND type=?" 
+    sql = "SELECT sql FROM listes WHERE title=? AND type=?"
     cur.execute(sql, (title, t, ))
     requete  = cur.fetchone()[0]
     cur.close()
@@ -920,7 +922,7 @@ def suppListeTV():
        cnx.commit()
     cur.close()
     cnx.close()
-       
+
 def suppListeT():
     dialog = xbmcgui.Dialog()
     ret = dialog.yesno('Listes', 'Quel type de liste ?', nolabel="Films", yeslabel="Series")

@@ -39,7 +39,7 @@
         <setting id="numHeberg" label="Numero Anotepad/Pastebin/Rentry/Textup" type="text" default="" visible="eq(-2,true)"/>
         <setting label="Ajouter contenu" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=folderPastebin&maj=false)" visible="eq(-3,true)"/>
         <setting label="Reset database" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=resetBDhkNew)" visible="eq(-4,true)"/>
-        <setting id="nbHmaj" label="Nombre d'heures entre deux M.A.J auto (0=jamais)" type="number" default="1" visible="eq(-5,true)"/>
+        <!-- <setting id="nbHmaj" label="Nombre d'heures entre deux M.A.J auto (0=jamais)" type="number" default="200" visible="eq(-5,true)"/> -->
         <!--<setting id="actiflocal" label="Activer BD locale" type="bool" default="false" visible="false" />
         <setting id="numpastes" label="Num Pastes" type="text" default="" visible="eq(-1,true)"/>-->
         <setting label="Lecture" type="lsep" />
@@ -72,11 +72,12 @@
     <!-- Installation avancée -->
     <category label="Installation avancée">
         <setting label="Maj HK² & HK" type="lsep" />
-        <setting id="majhk2" label="Activer la MAJ au restart" type="bool" default="false" />
-        <setting label="Mise en place de la MAJ au restart KODI" type="action" option="close" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=mepautostart)"/>
-        <setting id="intmaj" label="Interval (mins) Service de MAJ (0=desactivé)" type="labelenum" values="0|15|30|45|60" default="30"/>
+        <!-- <setting id="majhk2" label="Activer la MAJ au restart" type="bool" default="false" /> -->
+        <!-- <setting label="Mise en place de la MAJ au restart KODI" type="action" option="close" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=mepautostart)"/>-->
+        <setting id="intmaj" label="Interval (mins) Service de MAJ (0=desactivé)" type="labelenum" values="0|15|30|45|60" default="0"/>
         <setting label="Mise en place service de MAJ" type="action" option="close" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=mepautostart2)"/>
         <setting id="delaimaj" label="Delai 1er MAJ (mins)" type="number" default="0"/>
+        <setting id="rskin" label="Refresh skin aprés MAJ" type="bool" default="false" />
         <setting label="Base de données" type="lsep" />
         <setting id="skinhk" label="Num Skin HK" type="text" default="4j82p"/>
         <setting id="epg" label="EPG" type="text" default="lk4Xb"/>
