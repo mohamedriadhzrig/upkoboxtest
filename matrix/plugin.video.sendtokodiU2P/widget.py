@@ -14,6 +14,8 @@ except: pass
 import sqlite3
 import requests
 import ast
+from util import *
+from urllib.parse import unquote, quote
 
 
 BDBOOKMARK = xbmcvfs.translatePath('special://home/userdata/addon_data/plugin.video.sendtokodiU2P/bookmark.db')
@@ -461,7 +463,7 @@ def testSite(url):
 def responseSite(url):
     if "lesalkodiques.com" in  ADDON.getSetting("bookonline_site"):
       url = "https://lesalkodiques.com/u2pplay/requete.php?%s"  %(url.split("?")[1].strip())
-    resp = requests.get(url)
+    resp = requests.get(url, timeout=3)
     data = resp.json()
     return data
 
@@ -469,11 +471,11 @@ def pushSite(url):
     url = testSite(url)
     url = "/".join([x.strip() for x in url.split("/")])
     try:
-      resp = requests.get(url)
+      resp = requests.get(url, timeout=3)
     except:
       try:
         url = url.replace("http:", "https:")
-        resp = requests.get(url)
+        resp = requests.get(url, timeout=3)
       except: pass
 
 def getVu(typM="movie"):
@@ -652,6 +654,15 @@ def getFavs():
     return listes
 
 def extractOC():
+  if ADDON.getSetting("bookonline") != "false":
+    #name=lorlayneaxel&type=getvu HTTP/1.1"
+    site = ADDON.getSetting("bookonline_site")
+    name = ADDON.getSetting("bookonline_name")
+    url = "http://{}/requete.php?name={}&type=getoc".format(site, name)
+    notice(url)
+    listes = responseSite(url)
+
+  else:
     cnx = sqlite3.connect(BDBOOKMARK)
     cur = cnx.cursor()
     cur.execute("""CREATE TABLE IF NOT EXISTS onContinue(
@@ -664,24 +675,35 @@ def extractOC():
     listes = [x[0] for x in cur.fetchall()]
     cur.close()
     cnx.close()
-    return listes
+  return listes
 
 def gestOC(numId, typ):
-  cnx = sqlite3.connect(BDBOOKMARK)
-  cur = cnx.cursor()
-  cur.execute("""CREATE TABLE IF NOT EXISTS onContinue(
-    numId INTEGER,
-    UNIQUE (numId))
-      """)
-  cnx.commit()
-  if typ == "ajout":
-    sql = "REPLACE INTO onContinue (numId) VALUES ({})".format(numId)
+  if ADDON.getSetting("bookonline") != "false":
+    #name=lorlayneaxel&type=getvu HTTP/1.1"
+    site = ADDON.getSetting("bookonline_site")
+    name = ADDON.getSetting("bookonline_name")
+    if typ == "ajout":
+      mode = "ajoutoc"
+    else:
+      mode = "supoc"
+    url = "http://{}/requete.php?name={}&type={}&numid={}".format(site, name, mode, numId)
+    requests.get(url, timeout=3)
   else:
-    sql = "DELETE FROM onContinue WHERE numId={}".format(numId)
-  cur.execute(sql)
-  cnx.commit()
-  cur.close()
-  cnx.close()
+    cnx = sqlite3.connect(BDBOOKMARK)
+    cur = cnx.cursor()
+    cur.execute("""CREATE TABLE IF NOT EXISTS onContinue(
+      numId INTEGER,
+      UNIQUE (numId))
+        """)
+    cnx.commit()
+    if typ == "ajout":
+      sql = "REPLACE INTO onContinue (numId) VALUES ({})".format(numId)
+    else:
+      sql = "DELETE FROM onContinue WHERE numId={}".format(numId)
+    cur.execute(sql)
+    cnx.commit()
+    cur.close()
+    cnx.close()
 
 
 def extractFavs(t="movies"):
@@ -804,21 +826,26 @@ def supListe(liste):
     cnx.close()
 
 def getListe(title, t="film"):
-    cnx = sqlite3.connect(BDBOOKMARK)
-    cur = cnx.cursor()
-    cur.execute("""CREATE TABLE IF NOT EXISTS listes(
-      `id`    INTEGER PRIMARY KEY,
-      title TEXT,
-      sql TEXT,
-      type TEXT,
-      UNIQUE (title))
-        """)
-    cnx.commit()
-    sql = "SELECT sql FROM listes WHERE title=? AND type=?"
-    cur.execute(sql, (title, t, ))
-    requete  = cur.fetchone()[0]
-    cur.close()
-    cnx.close()
+    if ADDON.getSetting("bookonline") != "false":
+        requete = responseSite("http://%s/requete.php?name=%s&type=getlistep&media=%s&title=%s" %(ADDON.getSetting("bookonline_site"), ADDON.getSetting("bookonline_name"), t, title))
+        if requete:
+          requete = unquote(requete[0])
+    else:
+        cnx = sqlite3.connect(BDBOOKMARK)
+        cur = cnx.cursor()
+        cur.execute("""CREATE TABLE IF NOT EXISTS listes(
+          `id`    INTEGER PRIMARY KEY,
+          title TEXT,
+          sql TEXT,
+          type TEXT,
+          UNIQUE (title))
+            """)
+        cnx.commit()
+        sql = "SELECT sql FROM listes WHERE title=? AND type=?"
+        cur.execute(sql, (title, t, ))
+        requete  = cur.fetchone()[0]
+        cur.close()
+        cnx.close()
     return requete
 
 def langue(tab):

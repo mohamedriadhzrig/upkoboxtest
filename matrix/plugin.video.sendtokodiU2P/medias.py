@@ -310,7 +310,7 @@ class Media:
           self.overview = argvs[1]
           self.numId = argvs[4]
           self.link = argvs[7]
-          
+
         elif self.typeMedia == "vod":
           ##"id", "name", "description", "time", "tmdb_id", 'screenshot_uri', "age", 'year', "added", actors", "director", path", 'rating_kinopoisk'
           self.year = argvs[7]
@@ -332,9 +332,9 @@ class Media:
           self.id = argvs[0]
           self.link = argvs[14]
           self.episodes = argvs[15]
-        
-        elif self.typeMedia == "menu": 
-          #[Title, overview, year, genre, backdrop, popu] 
+
+        elif self.typeMedia == "menu":
+          #[Title, overview, year, genre, backdrop, popu]
           self.year = argvs[2]
           self.duration = ""
           self.popu = argvs[5]
@@ -347,8 +347,8 @@ class Media:
           self.overview = argvs[1]
           self.numId = argvs[6]
           self.link = ""
-        
-          
+
+
         elif self.typeMedia == "tvshow":
           self.year = argvs[2]
           try:
@@ -365,7 +365,7 @@ class Media:
           self.overview = argvs[1]
           self.numId = argvs[4]
           self.link = ""
-        
+
         elif self.typeMedia == "saga":
           #numId, title, overview, poster
           self.year = ""
@@ -392,7 +392,7 @@ class Media:
           self.overview = argvs[3]
           self.numId = argvs[2]
           self.link = argvs[5]
-          
+
         elif self.typeMedia == "episode":
           #[35339, 'Saison 01', 'S01E01', 'C9PxOAB66@nRlEQs5IiKHK#SD*C9PxOAB66@xClOGtaqotVH#1080P*xMZPoCbT0@8VJMS21ZpReE#*zi6kvPg63@FM63Jev8MtqA#1080P', 'Jack Sylvane', overview", '2012-01-16', '/A97bfgXNHR97WUTn52B4e8zsmn2.jpg', 7.6, 1, 1]
           self.year = argvs[6]
@@ -400,7 +400,7 @@ class Media:
           self.popu = argvs[8]
           if argvs[7]:
             self.backdrop += argvs[7]
-          self.poster += "" 
+          self.poster += ""
           self.genre = ""
           self.title= argvs[4]
           self.overview = argvs[5]
@@ -458,7 +458,7 @@ class TMDB:
 
     def getGenre(self, typM="movie"):
       """movie or tv"""
-      url1 = self.urlBase + "genre/{}/list?api_key={}&language={}".format(typM, self.key, self.lang) 
+      url1 = self.urlBase + "genre/{}/list?api_key={}&language={}".format(typM, self.key, self.lang)
       req = requests.get(url1)
       dictInfos = req.json()
       genres = [x["name"] for x in dictInfos["genres"]]
@@ -493,9 +493,9 @@ class TMDB:
       url1 = self.urlBase + "movie/{}?api_key={}&language={}".format(numId, self.key, self.lang)
       req = requests.get(url1)
       dictInfos = req.json()
-      dictMovies = {u'total_results': 1, u'total_pages': 1, u'page': 1, u'results': [{u'poster_path': dictInfos.get("poster_path", ""), u'title': dictInfos.get("title", u"Inconnu"), u'overview': dictInfos.get("overview", ""), 
+      dictMovies = {u'total_results': 1, u'total_pages': 1, u'page': 1, u'results': [{u'poster_path': dictInfos.get("poster_path", ""), u'title': dictInfos.get("title", u"Inconnu"), u'overview': dictInfos.get("overview", ""),
             u'release_date': dictInfos.get("release_date", 0), u'popularity': dictInfos.get("vote_average", 0.0), u'original_title': dictInfos.get("original_title", ""), u'backdrop_path': dictInfos.get("backdrop_path", ""),
-            u'vote_count': dictInfos.get("vote_count", 0), u'video': False, u'adult': False, u'vote_average': dictInfos.get("vote_average", 0.0), u'genre_ids': [], u'id': dictInfos.get("id", 0), 
+            u'vote_count': dictInfos.get("vote_count", 0), u'video': False, u'adult': False, u'vote_average': dictInfos.get("vote_average", 0.0), u'genre_ids': [], u'id': dictInfos.get("id", 0),
             u'original_language': dictInfos.get("original_language", "")}]}
       try:
         dictMovies["results"][0]["genre_ids"] = ", ".join([z for y in dictInfos["genres"] for x, z in y.items() if x == "name"])
@@ -592,7 +592,7 @@ class TMDB:
       req = requests.request("GET", url1, data=None)
       dictInfos = req.json()
       self.tabIdListe += [result['id'] for result in dictInfos["results"]]
-        
+
 
     def castFilm(self, numId):
       """infos realistaeur acteurs via numID"""
@@ -600,7 +600,7 @@ class TMDB:
       url1 = self.urlBase + "movie/{}/casts?api_key={}&language={}".format(numId, self.key, self.lang)
       req = requests.get(url1)
       dict_films_acteurs = req.json()
-      
+
       #nom realisateur
       try:
           for d in dict_films_acteurs['crew']:
@@ -615,7 +615,7 @@ class TMDB:
           tab_acteur = []
           for a in acteurs:
               tab_acteur.append((a['name'], a["character"], a["profile_path"], a["id"]))
-          dictCasts["cast"] = tab_acteur 
+          dictCasts["cast"] = tab_acteur
       except: pass
       return dictCasts["crew"] + dictCasts["cast"]
 
@@ -626,14 +626,14 @@ class TMDB:
         req = requests.get(url)
         print(url)
         dict_films_acteurs = req.json()
-        
+
         # acteurs
         try:
             acteurs = dict_films_acteurs['cast']
             tab_acteur = []
             for a in acteurs:
                 tab_acteur.append((a['name'], a["character"], a["profile_path"], a["id"]))
-            dictCasts["cast"] = tab_acteur 
+            dictCasts["cast"] = tab_acteur
         except: pass
         return dictCasts["cast"]
 
@@ -660,20 +660,21 @@ class TMDB:
       req = requests.get(url1)
       dictInfos = req.json()
       tabEpisodes = []
+      notice(dictInfos)
       try:
         for i, episode in enumerate(dictInfos["episodes"]):
           name = episode.get("name", "")
           overview = episode.get("overview", "")
           if not overview:
-            overview = "Pas de Synopsis...."  
+            overview = "Pas de Synopsis...."
           dateRelease = episode.get("air_date", "")
           backdrop = episode.get("still_path", "")
           popu = episode.get("vote_average", 0.0)
           numSaison = episode.get("season_number", int(saison))
-          numEpisode = episode.get("episode_number", 1 + i)    
+          numEpisode = episode.get("episode_number", 1 + i)
           tabEpisodes.append([name, overview, dateRelease, backdrop, popu, numSaison, numEpisode])
       except: pass
-      return tabEpisodes 
+      return tabEpisodes
 
     def verifSynop(self, tx):
       if not tx:
@@ -727,7 +728,7 @@ class TMDB:
             return logos[0]
         else:
           return ""
-    
+
     def searchMovie(self, title, filecode, pos, year=0, release=""):
         """search film par nom et annee"""
         self.title = title
@@ -763,7 +764,7 @@ class TMDB:
              u'original_title': u'', u'backdrop_path': u'', u'vote_count': 0, u'video': False, u'adult': False, u'vote_average': 0, u'genre_ids': [], u'id': 0, u'original_language': u''}]}
         if "#" in filecode:
           if filecode.split("#")[1]:
-            dictMovies["results"][0]["title"] = dictMovies["results"][0]["title"] + ' [%s]' %filecode.split("#")[1]  
+            dictMovies["results"][0]["title"] = dictMovies["results"][0]["title"] + ' [%s]' %filecode.split("#")[1]
         if release:
             dictMovies["results"][0]["overview"] = "Release: %s\n" %release + dictMovies["results"][0]["overview"]
 
@@ -774,7 +775,7 @@ class TMDB:
       dictGenre={28:"Action", 12:"Aventure", 16:"Animation", 35:"Comedie", 80:"Crime", 99:"Documentaire", 18:"Drame", 10751:"Familial", 14:"Fantastique", 10769:"Etranger", 36:"Histoire", 27:"Horreur",
                   10402:"Musique", 9648:"Mystere", 10749:"Romance", 878:"Science-Fiction", 10770:"Telefilm", 53:"Thriller", 10752:"Guerre", 37:"Western",
                   10759:"Action & Adventure", 10762:"Kids", 9648:"Mystery", 10763:"News", 10764:"Reality", 10765:"Science-Fiction & Fantastique", 10766:"Soap", 10767:"Talk", 10768:"War & Politics",
-                  28:"Action", 12:"Aventure",10751:"Familial"} 
+                  28:"Action", 12:"Aventure",10751:"Familial"}
       return ", ".join([dictGenre[x] for x in tab])
 
     def searchEpisode(self, nom, saison, episode, filecode, pos, year=0, release=""):
@@ -782,7 +783,7 @@ class TMDB:
         sauveTitle = "{} ({}".format(nom, episode)
         self.sauveTitle = sauveTitle
         self.year = year
-        tabRemp = [("(", " "), (")", " "), (".", " "), ("2020", ""), ("2019", ""), ("2021", ""), ("2022", "")] 
+        tabRemp = [("(", " "), (")", " "), (".", " "), ("2020", ""), ("2019", ""), ("2021", ""), ("2022", "")]
         for remp in tabRemp:
             nom = nom.replace(remp[0], remp[1])
         nom = nom.strip()
@@ -807,7 +808,7 @@ class TMDB:
                      u'vote_count': 0, u'video': False, u'adult': False, u'vote_average': 0, u'genre_ids': [], u'id': 0, u'original_language': u''}]}
         if "#" in filecode:
           dict_serie["results"][0]["title"] = dict_serie["results"][0]["title"] + ' [%s]' %filecode.split("#")[1]
-        if release:  
+        if release:
           dict_serie["results"][0]["overview"] = "Release: %s\n" %release + dict_serie["results"][0]["overview"]
         self.tabMedia.append((pos, filecode, dict_serie))
         return dict_serie
@@ -816,7 +817,7 @@ class TMDB:
         """rechercher serie par nom"""
         sauveTitle = nom
         self.year = year
-        tabRemp = [("(", " "), (")", " "), (".", " "), ("2020", ""), ("2019", ""), ("2021", ""), ("2022", "")] 
+        tabRemp = [("(", " "), (")", " "), (".", " "), ("2020", ""), ("2019", ""), ("2021", ""), ("2022", "")]
         for remp in tabRemp:
             nom = nom.replace(remp[0], remp[1])
         nom = nom.strip()
@@ -855,14 +856,14 @@ class TMDB:
             title = dict_infos.get("name", "") + nom
           else:
             title = dict_infos.get("name", nom)
-          dict_serie = {u'total_results': 1, u'total_pages': 1, u'page': 1, u'results': [{u'poster_path': dict_infos.get("poster_path", ""), u'title': title, u'overview': dict_infos.get("overview", "Pas de synop..."), 
-              u'release_date': dict_infos.get("first_air_date", 0), u'popularity': dict_infos.get("popularity", 0.0), u'original_title': u'', u'backdrop_path': dict_infos.get("backdrop_path", ""), u'vote_count': dict_infos.get("vote_count", 0), 
+          dict_serie = {u'total_results': 1, u'total_pages': 1, u'page': 1, u'results': [{u'poster_path': dict_infos.get("poster_path", ""), u'title': title, u'overview': dict_infos.get("overview", "Pas de synop..."),
+              u'release_date': dict_infos.get("first_air_date", 0), u'popularity': dict_infos.get("popularity", 0.0), u'original_title': u'', u'backdrop_path': dict_infos.get("backdrop_path", ""), u'vote_count': dict_infos.get("vote_count", 0),
               u'video': False, u'adult': False, u'vote_average': dict_infos.get("vote_average", 0.0), u'genre_ids': [], u'id': dict_infos.get("id", 0), u'original_language': dict_infos.get("original_language", "")}]}
           try:
             dict_serie["results"][0]["genre_ids"] = ", ".join([z for y in dict_infos["genres"] for x, z in y.items() if x == "name"])
           except:
             dict_serie["results"][0]["genre_ids"] = ""
-        except: 
+        except:
           dict_serie = {u'total_results': 1, u'total_pages': 1, u'page': 1, u'results': [{u'poster_path': u'', u'title': nom, u'overview': u'', u'release_date': 0, u'popularity': 0,
                 u'original_title': u'', u'backdrop_path': u'', u'vote_count': 0, u'video': False, u'adult': False, u'vote_average': 0, u'genre_ids': [], u'id': 0, u'original_language': u''}]}
         if params:
@@ -875,10 +876,10 @@ class TMDB:
     @property
     def extractListe(self):
         #m.title, m.overview, m.year, m.poster, m.numId, m.genre, m.popu, link, m.backdrop, m.runtime, m.id
-        for pos, filecode, infosT in sorted(self.tabMedia):   
+        for pos, filecode, infosT in sorted(self.tabMedia):
             #notice(infosT)
             try:
-              infos = infosT["results"][0] 
+              infos = infosT["results"][0]
               try:
                 year = int(infos["release_date"][:4])
               except:
@@ -906,7 +907,7 @@ class TMDB:
 
     def getIdDiffuseur(self, numId, page=1):
       self.tabNumIdDiff = []
-      ttp = self.seriesDiffuseur(numId, page) 
+      ttp = self.seriesDiffuseur(numId, page)
       for p in range(page + 1, ttp, 1):
         threading.Thread(name="diffuseur", target=self.seriesDiffuseur, args=(numId, p,)).start()
         time.sleep(0.03)
@@ -927,7 +928,7 @@ class TMDB:
                 break
         return True
 
-        
+
 if __name__ == '__main__':
   #https://api.themoviedb.org/3/search/keyword?api_key=96139384ce46fd4ffac13e1ad770db7a&query=cat
   #https://api.themoviedb.org/3/keyword/2626?api_key=96139384ce46fd4ffac13e1ad770db7a

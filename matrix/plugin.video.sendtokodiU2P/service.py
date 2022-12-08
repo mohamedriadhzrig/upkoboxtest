@@ -37,11 +37,11 @@ except ImportError:
     from urlparse import parse_qsl
 try:
     # Python 3
-    from urllib.parse import unquote, urlencode
+    from urllib.parse import unquote, urlencode, quote
     unichr = chr
 except ImportError:
     # Python 2
-    from urllib import unquote, urlencode
+    from urllib import unquote, urlencode, quote
 try:
     # Python 3
     from html.parser import HTMLParser
@@ -3320,6 +3320,7 @@ def playMediaHK(params):
                     if tt and (float(t) / float(tt) * 100.0) > 90.0:
                         #push on "on continue"
                         widget.gestOC(params["u2p"], "ajout")
+                        scraperUPTO.extractEpisodesOnContinue()
                         #
                         p = {"name": __addon__.getSetting("bookonline_name"), "type": "vuepisodes", "numid": params["u2p"], "saison": saison, "episodes": numEpisode,"vu": "1"}
                         requete = "http://%s/requete.php" %__addon__.getSetting("bookonline_site") + '?' + urlencode(p)
@@ -4158,10 +4159,10 @@ ps: si ya des fautes, ca tombe bien ce n'est pas un concours d'orthographe...'''
                 dictFiltre[filtre] = widget.votes()
             elif "Langue" in filtre:
                 if genreMedia == "movie":
-                    sqlang = "SELECT DISTINCT lang FROM movie"
+                    sqlang = "SELECT DISTINCT lang FROM filmsPub"
                 else:
-                    sqlang = "SELECT DISTINCT lang FROM tvshow"
-                liste = extractMedias(sql=sqlang, unique=1)
+                    sqlang = "SELECT DISTINCT lang FROM seriesPub"
+                liste = createbdhk.extractMedias(sql=sqlang, unique=1)
                 dictFiltre[filtre] = widget.langue(sorted(liste))
             dialog = xbmcgui.Dialog()
             ajout = dialog.yesno('Filtres', 'Ajout Filtre supplémentaire ?')
@@ -4197,6 +4198,12 @@ ps: si ya des fautes, ca tombe bien ce n'est pas un concours d'orthographe...'''
                             notice(sql)
                             d = dialog.input("Nom de la liste", type=xbmcgui.INPUT_ALPHANUM)
                             if d:
+                                if __addon__.getSetting("bookonline") != "false":
+                                    site = __addon__.getSetting("bookonline_site")
+                                    name = __addon__.getSetting("bookonline_name")
+                                    url = "http://{}/requete.php?type=insertlp&name={}&title={}&media={}&sql={}".format(site, name, d, media, quote(sql))
+                                    widget.pushSite(url)
+
                                 cur.execute("REPLACE INTO listes (title, sql, type) VALUES (?, ?, ?)", (d, sql, media, ))
                                 cnx.commit()
                                 showInfoNotification("Création liste: %s ok!!" %d)
@@ -4937,8 +4944,9 @@ if __name__ == '__main__':
                 ajoutProfil(initP=1)
 
             xbmcgui.Dialog().ok("Configuration" , "Config Ok !!\nUn petit merci aux contributeurs est toujours le bienvenu\nBon film....")
-
-    #mepAutoStart()
+    if not os.path.isfile(__repAddon__ + "service.txt"):
+        with open(__repAddon__ + "service.txt", "w") as f:
+            mepAutoStart2()
     createFav()
     notice(pyVersion)
     notice(pyVersionM)

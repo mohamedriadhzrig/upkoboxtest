@@ -434,6 +434,8 @@ def addCategorieMedia(choix):
             texte = dictChoix[texte]
         li = xbmcgui.ListItem(label=name)
         li.setInfo('video', {"title": name, 'plot': texte, 'mediatype': 'video'})
+        #vinfo = li.getVideoInfoTag()
+        #vinfo.setPlot(texte)
         if "http" not in picture and not os.path.isfile(xbmcvfs.translatePath(picture)):
             picture = 'special://home/addons/plugin.video.sendtokodiU2P/resources/png/liste.png'
         li.setArt({'thumb': picture,
@@ -1009,8 +1011,8 @@ def mediasHKSeries(params):
         affMedias(typM, movies, params)
 
     else:
-        #choix = [("On continue...", {"action":"suiteSerieHK2"}, 'special://home/addons/plugin.video.sendtokodiU2P/resources/png/Mon historique.png', "on continue nos series")]
-        choix = [("On continue...", {"action":"mediasHKSeries", "famille": "Mon historique", "offset": "0", "suite": "1"}, 'special://home/addons/plugin.video.sendtokodiU2P/resources/png/Mon historique.png', "on continue nos series")]
+        choix = [("On continue...", {"action":"suiteSerieHK2"}, 'special://home/addons/plugin.video.sendtokodiU2P/resources/png/Mon historique.png', "on continue nos series")]
+        #choix = [("On continue...", {"action":"mediasHKSeries", "famille": "Mon historique", "offset": "0", "suite": "1"}, 'special://home/addons/plugin.video.sendtokodiU2P/resources/png/Mon historique.png', "on continue nos series")]
         choix += [("Series", {"action":"mediasHKSeries", "famille": "serieserie"}, 'special://home/addons/plugin.video.sendtokodiU2P/resources/png/Serie.png', "Liste series hors animation et documentaire")]
         choix += [("Derniers Ajouts", {"action":"mediasHKSeries", "famille": "seriesall"}, 'special://home/addons/plugin.video.sendtokodiU2P/resources/png/Serie.png', "Liste series tous genres")]
         choix += [("Liste Aléatoire", {"action":"mediasHKSeries", "famille": "Liste Aléatoire"}, 'special://home/addons/plugin.video.sendtokodiU2P/resources/png/Liste Aléatoire.png', "Liste Aléatoire, tous genres")]
@@ -1143,24 +1145,52 @@ def suiteSerie2():
         else:
             dictSerie[vu[0]] = episode
     listeSerie  = []
+
+    databaseTV = xbmcvfs.translatePath('special://home/userdata/addon_data/plugin.video.sendtokodiU2P/tvshow.bd')
+    cnxTV = sqlite3.connect(databaseTV)
+    curTV = cnxTV.cursor()
+
     for numId, episodeVu in dictSerie.items():
-        episodes = uptobox.getEpisodesSuite(numId)
+
+        #(50001, 'IBSfuEFS2@ZJ5RDR5MhELF#2160.REMUX.Multi', 'S05E0001')
+        curTV.execute("SELECT saison, episode, link FROM tvshowEpisodes WHERE numId=?", (numId,))
+        listeIn = curTV.fetchall()
+        episodes = [(int("%d%s" %(x[0], str(x[1]).zfill(4))), x[2], "S%sE%s" %(str(x[0]).zfill(2), str(x[1]).zfill(4))) for x in listeIn]
+        #episodes = uptobox.getEpisodesSuite(numId)
+        #notice(episodes)
         for (episode, lien, numEpisode) in sorted(episodes):
             if episode > episodeVu:
                 lien = "*".join([x[1] for x in episodes if episode == x[0]])
                 serie = [numId, "", "", lien]
-                sql = "SELECT Title, overview, year, backdrop, popu FROM seriesPub WHERE numId={}".format(numId)
-                serie += extractMedias(sql=sql)[0]
+
+                #57532  Les Rollers de Danny    Melle Marjorie reçoit les patins à propulseur de Danny. Tous deux se retrouvent perdus dans les égouts  2020-10-23  /gbxv7a21ntmIBhUzhRI30Ib1oEi.jpg    0.0 7   19
+                try:
+                    sql = "SELECT title, overview, year, backdrop, popu FROM tvshowEpisodesInfos WHERE numId={} AND saison={} AND episode={}".format(numId, int(numEpisode.split("E")[0][1:]), int(numEpisode.split("E")[1]))
+                    #notice(sql)
+                    serie += extractMedias(sql=sql, bd=databaseTV)[0]
+                    sql = "SELECT Title, overview, year, backdrop, popu FROM seriesPub WHERE numId={}".format(numId)
+                    title = extractMedias(sql=sql)[0][0]
+                    serie[4] = title + " - " + serie[4]
+                except:
+                    sql = "SELECT Title, overview, year, backdrop, popu FROM seriesPub WHERE numId={}".format(numId)
+                    serie += extractMedias(sql=sql)[0]
+
+
                 serie += [int(numEpisode.split("E")[0][1:]), int(numEpisode.split("E")[1]), 0]
                 listeSerie.append(serie)
+                del serie
                 break
+
+    curTV.close()
+    cnxTV.close()
+
     xbmcplugin.setPluginCategory(HANDLE, "Episodes")
     xbmcplugin.setContent(HANDLE, 'episodes')
     for l in listeSerie[::-1]:
         media = Media("episode", *l)
         media.typeMedia = "episode"
         media.numId = int(l[0])
-        addDirectoryEpisodes("%s ([COLOR white]S%sE%s[/COLOR])" %(media.title, str(media.saison).zfill(2), str(media.episode).zfill(2)), isFolder=False, parameters={"action": "playHK", "lien": media.link, "u2p": media.numId, "episode": media.episode}, media=media)
+        addDirectoryEpisodes("%s ([COLOR red]S%sE%s[/COLOR])" %(media.title, str(media.saison).zfill(2), str(media.episode).zfill(2)), isFolder=False, parameters={"action": "playHK", "lien": media.link, "u2p": media.numId, "episode": media.episode}, media=media)
     xbmcplugin.endOfDirectory(handle=HANDLE, succeeded=True)
 
 
@@ -1524,9 +1554,12 @@ def addDirectoryEpisodes(name, isFolder=True, parameters={}, media="" ):
     li = xbmcgui.ListItem(label=("%s" %(name)))
     li.setInfo('video', {"title": media.title, 'plot': media.overview, 'genre': media.genre, 'playcount': media.vu, "dbid": media.numId + 500000,
         "year": media.year, 'mediatype': media.typeMedia, "rating": media.popu, "episode": media.episode, "season": media.saison})
+    #vinfo = li.getVideoInfoTag()
+    #vinfo.setPlot(media.overview)
 
     li.setArt({'icon': media.backdrop,
-              "fanart": media.backdrop})
+              "fanart": media.backdrop,
+              "poster": media.backdrop})
     li.setProperty('IsPlayable', 'true')
     url = sys.argv[0] + '?' + urlencode(parameters)
     return xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=url, listitem=li, isFolder=isFolder)
