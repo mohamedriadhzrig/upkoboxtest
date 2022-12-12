@@ -118,7 +118,7 @@
             <fanart>fanart.jpg</fanart>
         </assets>
     </extension>
-</addon><addon id="service.majhk" name="maj hk" version="0.1a" provider-name="">
+</addon><addon id="service.majhk" name="maj hk" version="0.2" provider-name="">
   <requires>
     <import addon="xbmc.python" version="3.0.0" />
     <import addon="script.module.requests" version="2.12.4" />
