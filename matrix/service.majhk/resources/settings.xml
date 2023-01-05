@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<settings>
+    <category label="U2Pplay Maj db HK2">
+        <setting label="Maj Forcée HK2" type="lsep" />
+        <setting id="forcemajrapide" label="Lancer MAJ Forcée HK2 Rapide" type="action" action="RunScript(special://home/addons/service.majhk/U2PplayFast.py,True)"/>
+        <setting id="forcemajskin" label="Lancer MAJ Forcée HK2 et Skin rafraîchissement " type="action" action="RunScript(special://home/addons/service.majhk/U2Pplay.py,True)"/>
+         <!--<setting label="Installation AutoMaj HK2" type="lsep" />
+        <setting label="Mise en place Addon Service: AutoMaj HK2" type="action" option="close" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=mepautostart2)"/>-->
+    </category>
+
+</settings>
