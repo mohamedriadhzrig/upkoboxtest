@@ -73,7 +73,7 @@
     <!-- Installation avancée -->
     <category label="Installation avancée">
         <setting label="Maj HK² & HK" type="lsep" />
-        <setting label="Configurer Maj (DELAI et Intervalle) choisir" type="action" option="close" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=intmajbann15)"/>
+        <setting label="Configurer Maj (INTERVALLE et DELAI) Choisir" type="action" option="close" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=intmajbann15)"/>
         <!-- <setting id="majhk2" label="Activer la MAJ au restart" type="bool" default="false" /> -->
         <!-- <setting label="Mise en place de la MAJ au restart KODI" type="action" option="close" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=mepautostart)"/>-->
         <setting id="intmaj" label="INTERVALLE (mins) entre les Maj (0=désactiver)" type="labelenum" values="0|5|15|30|45|60|120|240" default="0"/>
