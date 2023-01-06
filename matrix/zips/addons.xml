@@ -126,7 +126,7 @@
   <extension point="xbmc.service" library="service.py" />
   <extension point="xbmc.addon.metadata">
         <summary lang="en_GB">U2P Maj Rapide db HK2</summary>
-        <description lang="en_GB">Maj Rapide HK2  (Auto au lancement Kodi, avec banniére, automatiquement ou Forcée, ensuite)     [COLOR red](ATTENTION!) Un SEUL addon service doit lancer Maj ! AU LANCEMENT DE KODI[/COLOR]</description>
+        <description lang="en_GB">Maj Rapide HK2  (Auto au lancement Kodi avec banniére, Auto par intervalle ou Forcée, ensuite)     [COLOR red](ATTENTION!) Un SEUL addon service doit lancer Maj au lancemant Kodi[/COLOR]</description>
         <language />
         <platform>all</platform>
         <license>Apache-2.0</license>
