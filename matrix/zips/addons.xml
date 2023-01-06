@@ -22,7 +22,7 @@
             <fanart>fanart.jpg</fanart>
         </assets>		
     </extension>
-</addon><addon id="plugin.video.sendtokodiU2P" name="U2Pplay" version="0.9.9~beta1" provider-name="noway">
+</addon><addon id="plugin.video.sendtokodiU2P" name="U2Pplay" version="0.9.9~beta3" provider-name="noway">
   <requires>
     <trycatch>
       <try>
@@ -118,7 +118,7 @@
             <fanart>fanart.jpg</fanart>
         </assets>
     </extension>
-</addon><addon id="service.majhk" name="U2Pplay Maj Rapide HK2" version="1.1.0" provider-name="CoKodico">
+</addon><addon id="service.majhk" name="U2Pplay Maj Rapide HK2" version="1.1.1" provider-name="CoKodico">
     <requires>
     <import addon="xbmc.python" version="3.0.0" />
     <import addon="script.module.requests" version="2.12.4" />

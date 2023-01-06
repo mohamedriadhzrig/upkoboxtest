@@ -3,17 +3,17 @@
     <category label="U2Pplay Maj Forcée db HK² (Avec bannière)">
         <setting label="Maj Forcée HK²" type="lsep" />
         <setting id="forcemajbanniere" label="Lancer MAJ Forcée HK² (Avec bannière)" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=majhkcron)" />
-        <setting label="Maj Auto HK²" type="lsep" />
-        <setting label="Maj Auto db HK² (Avec bannière)" type="lsep" />
-        <setting id="intmaj" label="INTERVALLE (minutes) entre chaque Maj Auto avec bandeau nouveautés (0=desactivé)" type="labelenum" values="0|5|15|30|45|60|120|240" default="0"/>
+        <setting label="Maj Auto HK² (Avec bannière) Config" type="lsep" />
+        <setting label="Maj Auto db HK² (Avec bannière) Configuration" type="lsep" />
+        <!-- <setting id="intmaj" label="INTERVALLE (minutes) entre chaque Maj Auto avec bandeau nouveautés (0=desactivé)" type="labelenum" values="0|5|15|30|45|60|120|240" default="0"/>
         <setting id="delaimaj" label="DELAI (minutes) lancement Maj avec bandeau nouveautés au demarrage Kodi" type="number" default="0"/>
-        <setting id="rskin" label="Refresh skin aprés Maj" type="bool" default="false" />
-        <setting id="configmajbanniere" label="Config MAJ Forcée HK² (Avec bannière)" type="action" action="RunPlugin(plugin://service.majhk/widget.py/?action=majHkbann)" />
+        <setting id="rskin" label="Refresh skin aprés Maj" type="bool" default="false"/>-->
+        <setting id="configmajbanniere" label="Config MAJ Forcée HK² (Avec bannière)" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=intmajbann15)" />
     </category>
     <category label="U2Pplay Maj Forcée db HK² (Sans bannière)">
-        <setting label="Maj Forcée HK²" type="lsep" />
-        <setting id="forcemajrapide" label="Lancer Maj Forcée HK² Rapide" type="action" action="RunScript(special://home/addons/service.majhk/U2PplayFast.py,True)"/>
-        <setting id="forcemajskin" label="Lancer Maj Forcée HK² et Skin rafraîchissement " type="action" action="RunScript(special://home/addons/service.majhk/U2Pplay.py,True)"/>
+        <setting label="Maj Forcée HK² (Sans bannière)" type="lsep" />
+        <setting id="forcemajrapide" label="Lancer Maj Forcée HK² Rapide (Sans bannière)" type="action" action="RunScript(special://home/addons/service.majhk/U2PplayFast.py,True)"/>
+        <setting id="forcemajskin" label="Lancer Maj Forcée HK² et Skin rafraîchissement (Sans bannière)" type="action" action="RunScript(special://home/addons/service.majhk/U2Pplay.py,True)"/>
     </category>
 
 </settings>
