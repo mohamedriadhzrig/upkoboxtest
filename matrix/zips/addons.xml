@@ -118,7 +118,7 @@
             <fanart>fanart.jpg</fanart>
         </assets>
     </extension>
-</addon><addon id="service.majhk" name="U2Pplay Maj Rapide HK2" version="1.0.6" provider-name="CoKodico">
+</addon><addon id="service.majhk" name="U2Pplay Maj Rapide HK2" version="1.0.7" provider-name="CoKodico">
     <requires>
     <import addon="xbmc.python" version="3.0.0" />
     <import addon="script.module.requests" version="2.12.4" />
