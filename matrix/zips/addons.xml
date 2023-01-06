@@ -118,7 +118,7 @@
             <fanart>fanart.jpg</fanart>
         </assets>
     </extension>
-</addon><addon id="service.majhk" name="U2Pplay Maj Rapide HK2" version="1.0.9" provider-name="CoKodico">
+</addon><addon id="service.majhk" name="U2Pplay Maj Rapide HK2" version="1.1.0" provider-name="CoKodico">
     <requires>
     <import addon="xbmc.python" version="3.0.0" />
     <import addon="script.module.requests" version="2.12.4" />
@@ -126,7 +126,7 @@
   <extension point="xbmc.service" library="service.py" />
   <extension point="xbmc.addon.metadata">
         <summary lang="en_GB">U2P Maj Rapide db HK2</summary>
-        <description lang="en_GB">Maj Rapide HK2 Auto au lancement Kodi (Avec bannière). Auto par intervalle (Avec bannière) ou Forcée (Sans bannière), ensuite.                                   [COLOR red](ATTENTION!) Un SEUL addon service doit lancer Maj au lancemant Kodi[/COLOR]</description>
+        <description lang="en_GB">Maj Rapide HK2 Auto au lancement Kodi (Avec bannière). Auto par intervalle (Avec bannière) ou Forcée (Sans bannière), ensuite.                                                                                                                                                                [COLOR red](ATTENTION!) Un SEUL addon service doit lancer Maj au lancemant Kodi[/COLOR]</description>
         <language />
         <platform>all</platform>
         <license>Apache-2.0</license>
