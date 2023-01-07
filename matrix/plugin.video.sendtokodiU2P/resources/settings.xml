@@ -77,7 +77,7 @@
         <!-- <setting id="majhk2" label="Activer la MAJ au restart" type="bool" default="false" /> -->
         <!-- <setting label="Mise en place de la MAJ au restart KODI" type="action" option="close" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=mepautostart)"/>-->
         <setting id="intmaj" label="INTERVALLE (mins) entre les Maj (0=désactiver)" type="labelenum" values="0|5|15|30|45|60|120|240" default="0"/>
-        <setting id="delaimaj" label="DELAI à la 1re Maj (mins)" type="number" default="0"/>
+        <setting id="delaimaj" label="DELAI (mins) à la 1re Maj, au démarrage de Kodi" type="number" default="0"/>
         <setting id="rskin" label="REFRESH skin après chaque MAJ" type="bool" default="false" />
         <setting label="Mise en place service de MAJ" type="action" option="close" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=mepautostart2)"/>
         <setting label="Base de données" type="lsep" />
