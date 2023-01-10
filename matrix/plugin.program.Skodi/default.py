@@ -48,15 +48,15 @@ def add_dir(name, mode, thumb):
 def main_menu():
     xbmcplugin.setPluginCategory(__handle__, "[COLOR lime]Menu Skodi[/COLOR]")
     xbmcplugin.setContent(__handle__, 'files')       
-    add_dir("[COLOR aqua]- Choisir Skins Prèconfigurer Pour U2P[/COLOR]", 'hk2', artworkPath + 'icon (U2P).png')
-    add_dir("[COLOR yellow]-- Installer Skin[/COLOR] (Habillage en obtenir plus...)", 'inst_skin', artworkPath + 'install3.jpg')
+    add_dir("[COLOR aqua]- Choisissez un skin préconfiguré[/COLOR]", 'hk2', artworkPath + 'unnamed.jpg')
+    add_dir("[COLOR yellow]-- Installer Skin[/COLOR] (Habillage en obtenir plus...)", 'inst_skin', artworkPath + 'install (2).jpg')
     add_dir("[COLOR lime]--- Ouvrir U2P[/COLOR]", 'ouvrir_u2p', artworkPath + 'icon (U2P).png')
-    add_dir("[COLOR lime]---- U2P Token et Bloc-notes (Rentry, Anotepad...)[/COLOR]", 'majHk', artworkPath + 'icon (U2P).png')
-    add_dir("[COLOR magenta]----- Menu Maj , paramètres HK2 et Menu Skin Sauvegardes[/COLOR]", 'menumajhk2', artworkPath + 'NETTOYER1.jpg')    
+    add_dir("[COLOR lime]---- U2P Token et Bloc-notes (Rentry et Uptobox uniquement)[/COLOR]", 'majHk', artworkPath + '8lULqB5P_400x400.png')
+    add_dir("[COLOR magenta]----- Menu HK2 Maj et paramètres / Menu Skin Sauvegardes[/COLOR]", 'menumajhk2', artworkPath + 'istockphoto-1131394388-170667a.jpg')    
     #add_dir("[COLOR lime]Maj Database HK2[/COLOR]", 'menumajhk2', artworkPath + 'icone.png')
     #add_dir("[COLOR blueviolet]----- Sauvegarde et restauration[/COLOR]", 'save_restor', artworkPath + 'save.png')
     #add_dir("[COLOR darkviolet]--- Nettoyer KODI[/COLOR]", 'nettoye', artworkPath + 'icone.png')
-    add_dir("[COLOR yellow]------ Menu repository (A faire, Après installation)[/COLOR]", 'inst_add', artworkPath + 'click-here-button.jpg')
+    #add_dir("[COLOR yellow]------ Menu repository (A faire, Après installation)[/COLOR]", 'inst_add', artworkPath + 'click-here-button.jpg')
     xbmcplugin.endOfDirectory(handle=__handle__, succeeded=True)
 
 ##############################################
@@ -84,7 +84,7 @@ def inst_add2():
 def inst_tout():
     #install repository additionnels
     # suppression dossier temporaire
-    dirPath = xbmc.translatePath('special://home/temp/temp/')
+    dirPath = xbmcvfs.translatePath('special://home/temp/temp/')
     try:
         shutil.rmtree(dirPath)
     except:
@@ -95,15 +95,16 @@ def inst_tout():
     zipurl = 'https://github.com/UpKobox/Skodi/raw/main/repo.zip'
     with urlopen(zipurl) as zipresp:
         with ZipFile(BytesIO(zipresp.read())) as zfile:
-            zfile.extractall(xbmc.translatePath('special://home/temp/temp/'))
+            zfile.extractall(xbmcvfs.translatePath('special://home/temp/temp/'))
     # copie des fichiers extraie
-    source_dir = xbmc.translatePath('special://home/temp/temp/addons')
-    destination_dir = xbmc.translatePath('special://home/addons')
+    source_dir = xbmcvfs.translatePath('special://home/temp/temp/addons')
+    destination_dir = xbmcvfs.translatePath('special://home/addons')
     shutil.copytree(source_dir, destination_dir, dirs_exist_ok=True)
-    xbmc.sleep(3000)
-    xbmc.executebuiltin("Notification(MISE A JOUR OK,Addons copiés !)")
-    #active addon
+    xbmc.sleep(2000)
+    xbmc.executebuiltin( 'Notification(OK, Les addons sont installés, 2000)' )
+    xbmc.sleep(1000)
     xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.autowidget", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.heppen", "enabled": true }}')
     xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.jurialmunkey", "enabled": true }}')
     xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.prototype", "enabled": true }}')
     xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.lattsrepo", "enabled": true }}')
@@ -112,15 +113,33 @@ def inst_tout():
     xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.UpKobox", "enabled": true }}')
     xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.RayRepo", "enabled": true }}')
     xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.auramod.aio", "enabled": true }}')
-    xbmc.sleep(2000)
-    xbmc.executebuiltin("Notification(MISE A JOUR OK,Addons activer !)")
-    xbmc.sleep(2000)
-    xbmc.executebuiltin( 'ReloadSkin()' )
-    xbmc.executebuiltin( "Notification(Rafraichissement Skin,,2000)" )
-    xbmc.executebuiltin("Notification(ATTENTION KODI VA SE FERMER , Relancez le...)")
-    xbmc.sleep(2000)
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.Skodi", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "plugin.program.Skodi", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "plugin.video.catchuptvandmore", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "skin.arctic.horizon.2", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "plugin.program.autowidget", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "script.xbmcbackup", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "plugin.video.catchuptvandmore", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "resource.images.catchuptvandmore", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "script.module.inputstreamhelper", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "script.keymap", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "plugin.audio.radio_de", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "script.skin.helper.skinbackup", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "script.skinvariables", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "resource.images.studios.coloured", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "script.texturemaker", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "plugin.video.themoviedb.helper", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "script.trakt", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "plugin.video.sendtokodiU2P", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "service.upnext", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "script.module.youtube.dl", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "resource.images.weatherfanart.multi", "enabled": true }}')
+    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "resource.images.weathericons.white", "enabled": true }}')
+    xbmc.sleep(1000)
+    xbmc.executebuiltin( 'Notification(ATTENTION, Redemarrage Kodi obligatoire, 2000)' )
+    xbmc.sleep(1000)
     xbmc.executebuiltin('Quit')
-
+ 
 # ACTIVER LES REPOSITORY
 def inst_quit():
     #active addon
@@ -157,7 +176,7 @@ def inst_act():
 def inst_tout2():
     #install addons additionnels
     # suppression dossier temporaire
-    dirPath = xbmc.translatePath('special://home/temp/temp/')
+    dirPath = xbmcvfs.translatePath('special://home/temp/temp/')
     try:
         shutil.rmtree(dirPath)
     except:
@@ -168,22 +187,14 @@ def inst_tout2():
     zipurl = 'http://kodi.prf2.ovh/dbs/addons.zip'
     with urlopen(zipurl) as zipresp:
         with ZipFile(BytesIO(zipresp.read())) as zfile:
-            zfile.extractall(xbmc.translatePath('special://home/temp/temp/'))
+            zfile.extractall(xbmcvfs.translatePath('special://home/temp/temp/'))
     # copie des fichiers extraie
-    source_dir = xbmc.translatePath('special://home/temp/temp/addons')
-    destination_dir = xbmc.translatePath('special://home/addons')
+    source_dir = xbmcvfs.translatePath('special://home/temp/temp/addons')
+    destination_dir = xbmcvfs.translatePath('special://home/addons')
     shutil.copytree(source_dir, destination_dir, dirs_exist_ok=True)
-    xbmc.sleep(3000)
-    #active addon
-    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "resource.uisounds.androidtv", "enabled": true }}')
-    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "plugin.program.autocompletion", "enabled": true }}')
-    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.prototype", "enabled": true }}')
-    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.vstream", "enabled": true }}')
-    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "script.module.dnspython", "enabled": true }}')
-    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "service.upnext", "enabled": true }}')
-    xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.UpKobox", "enabled": true }}')
+    xbmc.executebuiltin("Notification(ATTENTION Redemarrage Kodi obligatoire)")
     xbmc.sleep(2000)
-    xbmc.executebuiltin("Notification(MISE A JOUR OK,Addons copiés !)")
+    xbmc.executebuiltin('Quit')
 
 # QUITTER KODI
 def inst_quit2():
@@ -216,14 +227,14 @@ def au_maj():
     zipurl = 'https://github.com/prf2/pack/raw/kodi/au_maj.zip'
     with urlopen(zipurl) as zipresp:
         with ZipFile(BytesIO(zipresp.read())) as zfile:
-            zfile.extractall(xbmc.translatePath('special://home/temp/temp/'))
+            zfile.extractall(xbmcvfs.translatePath('special://home/temp/temp/'))
     # copie des fichiers extraie
-    source_dir = xbmc.translatePath('special://home/temp/temp/addon_data')
-    destination_dir = xbmc.translatePath('special://home/userdata/addon_data')
-    source_dir2 = xbmc.translatePath('special://home/temp/temp/addons')
-    destination_dir2 = xbmc.translatePath('special://home/addons')
-    source_dir3 = xbmc.translatePath('special://home/temp/temp/keymaps')
-    destination_dir3 = xbmc.translatePath('special://home/userdata/keymaps')
+    source_dir = xbmcvfs.translatePath('special://home/temp/temp/addon_data')
+    destination_dir = xbmcvfs.translatePath('special://home/userdata/addon_data')
+    source_dir2 = xbmcvfs.translatePath('special://home/temp/temp/addons')
+    destination_dir2 = xbmcvfs.translatePath('special://home/addons')
+    source_dir3 = xbmcvfs.translatePath('special://home/temp/temp/keymaps')
+    destination_dir3 = xbmcvfs.translatePath('special://home/userdata/keymaps')
     shutil.copytree(source_dir, destination_dir, dirs_exist_ok=True)
     shutil.copytree(source_dir2, destination_dir2, dirs_exist_ok=True)
     shutil.copytree(source_dir3, destination_dir3, dirs_exist_ok=True)
@@ -237,20 +248,20 @@ def au_majCoKo():
     zipurl = 'https://github.com/UpKobox/Skodi/raw/main/SKIN/media(CoKodico).zip'
     with urlopen(zipurl) as zipresp:
         with ZipFile(BytesIO(zipresp.read())) as zfile:
-            zfile.extractall(xbmc.translatePath('special://home/temp/temp/'))
+            zfile.extractall(xbmcvfs.translatePath('special://home/temp/temp/'))
     # copie des fichiers extraie
-    source_dir = xbmc.translatePath('special://home/temp/temp')
-    destination_dir = xbmc.translatePath('special://home/media')
+    source_dir = xbmcvfs.translatePath('special://home/temp/temp')
+    destination_dir = xbmcvfs.translatePath('special://home/media')
     shutil.copytree(source_dir, destination_dir, dirs_exist_ok=True)
     xbmc.executebuiltin("Notification(EXTRACTION OK,Maj 1 effectuée !)")
     xbmc.sleep(2000)
     zipurl = 'https://github.com/UpKobox/Skodi/raw/main/SKIN/png(CoKodico).zip'
     with urlopen(zipurl) as zipresp:
         with ZipFile(BytesIO(zipresp.read())) as zfile:
-            zfile.extractall(xbmc.translatePath('special://home/temp/temp/'))
+            zfile.extractall(xbmcvfs.translatePath('special://home/temp/temp/'))
     # copie des fichiers extraie
-    source_dir = xbmc.translatePath('special://home/temp/temp')
-    destination_dir = xbmc.translatePath('special://home/media')
+    source_dir = xbmcvfs.translatePath('special://home/temp/temp')
+    destination_dir = xbmcvfs.translatePath('special://home/media')
     shutil.copytree(source_dir, destination_dir, dirs_exist_ok=True)
     xbmc.executebuiltin("Notification(EXTRACTION OK,Maj 2 effectuée !)")
     xbmc.sleep(2000)
@@ -260,24 +271,24 @@ def au_majCoKo():
 def au_maj2():
     #install repository additionnels
     # suppression dossier temporaire
-    dirPath = xbmc.translatePath('special://home/temp/temp/')
+    dirPath = xbmcvfs.translatePath('special://home/temp/temp/')
     try:
         shutil.rmtree(dirPath)
     except:
         print('Error while deleting directory')
     xbmc.sleep(2000)
-    xbmc.executebuiltin("Notification(REPO,Téléchargement en cours...)")
+    xbmc.executebuiltin( 'Notification(Repository, Téléchargement en cours..., 2000)' )
     # telechargement et extraction du zip
     zipurl = 'https://github.com/UpKobox/Skodi/raw/main/repo.zip'
     with urlopen(zipurl) as zipresp:
         with ZipFile(BytesIO(zipresp.read())) as zfile:
-            zfile.extractall(xbmc.translatePath('special://home/temp/temp/'))
+            zfile.extractall(xbmcvfs.translatePath('special://home/temp/temp/'))
     # copie des fichiers extraie
-    source_dir = xbmc.translatePath('special://home/temp/temp/addons')
-    destination_dir = xbmc.translatePath('special://home/addons')
+    source_dir = xbmcvfs.translatePath('special://home/temp/temp/addons')
+    destination_dir = xbmcvfs.translatePath('special://home/addons')
     shutil.copytree(source_dir, destination_dir, dirs_exist_ok=True)
     xbmc.sleep(3000)
-    xbmc.executebuiltin("Notification(MISE A JOUR OK,Addons copiés !)")
+    xbmc.executebuiltin( 'Notification(Maj OK, Repository copiés !, 2000)' )
     #active addon
     xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.autowidget", "enabled": true }}')
     xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.jurialmunkey", "enabled": true }}')
@@ -289,7 +300,7 @@ def au_maj2():
     xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.RayRepo", "enabled": true }}')
     xbmc.executeJSONRPC('{"jsonrpc": "2.0", "id":1, "method": "Addons.SetAddonEnabled", "params": { "addonid": "repository.auramod.aio", "enabled": true }}')
     xbmc.sleep(2000)
-    xbmc.executebuiltin("Notification(MISE A JOUR OK,Addons activer !)")
+    xbmc.executebuiltin( 'Notification(Maj OK, Addons activer !, 2000)' )
 
 ##############################################
 # Installer Skin
@@ -308,69 +319,20 @@ def ouvrir_u2p():
  # Fenetre Parametres Backup
 def settings_Backup():
     xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/Settings Fenetre Backup.py,True)')
+
+ # Ouvrir SHSB
+def ouvrir_SHSB():
+    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/Script SHSB.py,True)')
+
+# Ouvrir openwizard
+def ouvrir_openwizard():
+    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/openwizard.py,True)')
+##############################################
+#active addon
+def alladdon():
+    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/active alladdon .py,True)')
 ##############################################
 
-# COMPTES PREMIUM ALEATOIRE
-def menuKey():
-    tabkey = extractAnotpad()
-    nb = 0
-    ok = False
-    while tabkey:
-        keyUpto = random.choice(tabkey)
-        status, validite = testUptobox(keyUpto)
-        if status == "Success":
-            showInfoNotification("Notification(Key Upto ok! expire: %s)" %validite)
-            ok = True
-            break
-        else:
-            tabkey.remove(keyUpto)
-            showErrorNotification("Prevenir Ray key: %s HS" %keyUpto)
-            nb += 1
-        if nb > 50:
-            break
-            return
-    if ok:
-        # config u2play
-        try:
-            addon = xbmcaddon.Addon("plugin.video.sendtokodiU2P")
-            addon.setSetting(id="keyupto", value=keyUpto)
-            nb_items = "50"
-            addon.setSetting(id="nb_items", value=nb_items)
-            thumbnails = "5000"
-            addon.setSetting(id="thumbnails", value=thumbnails)
-        except Exception as e:
-            notice("Erreur HK: " + str(e))
-        
-        # config vstream
-        try:
-            addon = xbmcaddon.Addon("plugin.video.vstream")
-            cache_v = "8"
-            addon.setSetting(id="pastebin_cacheDuration", value=cache_v)
-            hoster_uptobox_premium = "true"
-            addon.setSetting(id="hoster_uptobox_premium", value=hoster_uptobox_premium)
-            hoster_uptobox_mode_default = "2"
-            addon.setSetting(id="hoster_uptobox_mode_default", value=hoster_uptobox_mode_default)
-            meta_view = "true"
-            addon.setSetting(id="meta-view", value=meta_view)
-            addon.setSetting(id="hoster_uptobox_token", value=keyUpto)
-        except Exception as e:
-            notice("Erreur Vstream: " + str(e))
-        
-        #config catchup
-        try:
-            addon = xbmcaddon.Addon("plugin.video.catchuptvandmore")
-            mail = "rayflix@laposte.net"
-            mot2passe = "Mot2passe"
-            addon.setSetting(id="nrj.login", value=mail)
-            addon.setSetting(id="6play.login", value=mail)
-            addon.setSetting(id="rmcbfmplay.login", value=mail)
-            addon.setSetting(id="nrj.password", value=mot2passe)
-            addon.setSetting(id="6play.password", value=mot2passe)
-            addon.setSetting(id="rmcbfmplay.password", value=mot2passe)
-        except Exception as e:
-            notice("Erreur CatchUp: " + str(e))
-
-        showInfoNotification("Config Comptes ok")
 
 def extractAnotpad():
     numAnotepad = __addon__.getSetting("numAnotepad")
@@ -427,7 +389,7 @@ def rayhk2():
     add_dir("lancer : Skin [COLOR red]RETRO[/COLOR] [COLOR orange] (pour les nostalgiques)[/COLOR]", 'ChangeSkinsProjectAurahk2retretlance', artworkPath + 'icon (Ray).png')
     #add_dir("[COLOR white]Choisir Rayflix:[/COLOR] Skin RETRO [COLOR deepskyblue](pour les nostalgiques) [/COLOR]", 'hk2retro', artworkPath + 'icon (Ray).png')
     #add_dir("[COLOR lime]Lancer: Skin Rayflix choisi [/COLOR]", 'ChangeSkinsProjectAura', artworkPath + 'icon (Ray).png')
-    add_dir("Menu installation [COLOR lime](Redemarrage necessaire)[/COLOR]", 'inst_add2', artworkPath + 'icon (Ray).png')
+    #add_dir("Menu installation [COLOR lime](Redemarrage necessaire)[/COLOR]", 'inst_add2', artworkPath + 'icon (Ray).png')
     add_dir("Mettre a jour les icones [COLOR lime](Pour les Skins de Rayflix)[/COLOR]", 'au_maj', artworkPath + 'icon (Ray).png')
     #add_dir("[COLOR lime]Paramètres U2P [/COLOR]", 'settings_u2p', artworkPath + 'icon (U2P).png')
     #add_dir("[COLOR magenta]Menu Maj HK2 et Skin Sauvegarde[/COLOR]", 'menumajhk2', artworkPath + 'icon (U2P).png')
@@ -441,12 +403,13 @@ def hk2():
     xbmcplugin.setPluginCategory(__handle__, "[COLOR lime]Skin U2Pplay[/COLOR]")
     xbmcplugin.setContent(__handle__, 'files')
     add_dir("Skins de [COLOR yellow](CoKodico)[/COLOR]", 'CoKo', artworkPath + 'icon (CoKodico).jpg')
-    add_dir("Skins de [COLOR yellow](Luc562)[/COLOR]", 'Luc562', artworkPath + 'Luc562.png')
+    add_dir("Skins de [COLOR yellow](Luc562)[/COLOR]", 'Luc562', artworkPath + 'Luc562logos.png')
     add_dir("Skins de [COLOR yellow](Rayflix)[/COLOR]", 'rayhk2', artworkPath + 'icon (Ray).png')
-    add_dir("Skins de [COLOR yellow](pistachePoilue)[/COLOR]", 'pistachePoilue', artworkPath + 'icone.png')
-    add_dir("Skins de [COLOR yellow](bePurple)[/COLOR]", 'bePurple', artworkPath + 'icone.png')
-    add_dir("Skins de [COLOR yellow](Ghantholiny)[/COLOR]", 'Ghantholiny', artworkPath + 'icone.png')
-    add_dir("Skins de [COLOR yellow](FanKai)[/COLOR]", 'FanKai', artworkPath + 'FanKai.png')
+    add_dir("Skins de [COLOR yellow](pistachePoilue)[/COLOR]", 'pistachePoilue', artworkPath + 'pistache.jpg')
+    add_dir("Skins de [COLOR yellow](Vicqing)[/COLOR]", 'Vicqing', artworkPath + 'VicQing.png')
+    add_dir("Skins de [COLOR yellow](bePurple)[/COLOR]", 'bePurple', artworkPath + 'bePurple.jpg')
+    add_dir("Skins de [COLOR yellow](Ghantholiny)[/COLOR]", 'Ghantholiny', artworkPath + 'ghantholiny.png')
+    #add_dir("Skins de [COLOR yellow](FanKai)[/COLOR]", 'FanKai', artworkPath + 'FanKai.png')
     #add_dir("[COLOR lime]Paramètres U2P [/COLOR]", 'settings_u2p', artworkPath + 'icon (U2P).png')
     add_dir("[COLOR magenta]Menu Maj HK2 et Menu Skin Sauvegarde[/COLOR]", 'menumajhk2', artworkPath + 'NETTOYER1.jpg')
     xbmcplugin.endOfDirectory(handle=__handle__, succeeded=True)
@@ -464,12 +427,12 @@ def CoKo():
     add_dir("[COLOR cyan]lancer :[/COLOR] Skin Titan BINGIE MOD [COLOR lime](le + gourmand)[/COLOR]", 'ChangeSkinbingieCoKoetlance', artworkPath + 'fanart (titanbingieCoKo).jpg')
     #add_dir("[COLOR white]Choisir:[/COLOR] Choisir Skin Titan BINGIE MOD [COLOR yellow](le + gourmand)[/COLOR]", 'titanbingieCoKo', artworkPath + 'fanart (titanbingieCoKo).jpg')
     #add_dir("[COLOR red]Lancer:[/COLOR] Lancer Skin Titan BINGIE MOD [COLOR yellow](le + gourmand)[/COLOR]", 'ChangeSkinbingieCoKo', artworkPath + 'fanart (titanbingieCoKo).jpg')
-    add_dir("[COLOR cyan]lancer :[/COLOR] Skin Copacetic [COLOR lime](WIP Alpha)[/COLOR]", 'ChangeSkincopacetiCoKoetlance', artworkPath + 'fanart (Copacetic).jpg')
+    #add_dir("[COLOR cyan]lancer :[/COLOR] Skin Copacetic [COLOR lime](WIP Alpha)[/COLOR]", 'ChangeSkincopacetiCoKoetlance', artworkPath + 'fanart (Copacetic).jpg')
     #add_dir("[COLOR white]Choisir:[/COLOR] Choisir Skin Copacetic [COLOR yellow](WIP Alpha)[/COLOR]", 'SkinCoKopacetic', artworkPath + 'fanart (Copacetic).jpg')
     #add_dir("[COLOR red]Lancer:[/COLOR] Lancer Skin Copacetic [COLOR yellow](WIP Alpha)[/COLOR]", 'ChangeSkincopacetiCoKo', artworkPath + 'fanart (Copacetic).jpg')
-    add_dir("[COLOR cyan]lancer :[/COLOR] Skin Aeon [COLOR lime](MQ 8)[/COLOR]", 'ChangeSkinAeonMQ8CoKoetlance', artworkPath + 'fanart (MQ8).jpg')
-    #add_dir("[COLOR white]Choisir:[/COLOR] Choisir Skin Aeon [COLOR yellow](MQ 8)[/COLOR]", 'MQ8', artworkPath + 'fanart (MQ8).jpg')
-    #add_dir("[COLOR red]Lancer:[/COLOR] Lancer Skin Aeon [COLOR yellow](MQ 8)[/COLOR]", 'ChangeSkinAeonMQ8CoKo', artworkPath + 'fanart (MQ8).jpg')
+    #add_dir("[COLOR cyan]lancer :[/COLOR] Skin Aeon [COLOR lime](MQ 8)[/COLOR]", 'ChangeSkinAeonMQ8CoKoetlance', artworkPath + 'fanart (MQ8).jpg')
+    add_dir("[COLOR white]Copier:[/COLOR] Skin Aeon [COLOR yellow](MQ 8)[/COLOR]", 'MQ8', artworkPath + 'fanart (MQ8).jpg')
+    add_dir("[COLOR cyan]Lancer:[/COLOR] Skin Aeon [COLOR yellow](MQ 8)[/COLOR]", 'ChangeSkinAeonMQ8CoKo', artworkPath + 'fanart (MQ8).jpg')
     add_dir("[COLOR cyan]Mettre a jour les icones [/COLOR][COLOR lime] (Pour les Skins de CoKodico)[/COLOR]", 'au_majCoKo', artworkPath + 'icone.png')
     #add_dir("[COLOR lime]Paramètres U2P [/COLOR]", 'settings_u2p', artworkPath + 'icon (U2P).png')
     #add_dir("[COLOR magenta]Menu Maj HK2 et Menu Skin Sauvegarde[/COLOR]", 'menumajhk2', artworkPath + 'NETTOYER1.jpg')
@@ -513,6 +476,8 @@ def Luc562():
     add_dir("[COLOR cyan]lancer :[/COLOR] Skin Mimic [COLOR lime](lr)[/COLOR]", 'ChangeSkinmimiclretlance', artworkPath + 'mimic.jpg')
     #add_dir("[COLOR white]Choisir:[/COLOR] Skin Mimic [COLOR yellow](lr)[/COLOR]", 'Luc562Mimic', artworkPath + 'mimic.jpg')
     #add_dir("[COLOR lime]Lancer:[/COLOR] Skin Mimic [COLOR yellow](lr)[/COLOR]", 'ChangeSkinmimiclr', artworkPath + 'mimic.jpg')
+    add_dir("[COLOR cyan]lancer :[/COLOR] Cosmic [COLOR lime](WIP Alpha)[/COLOR]", 'vicosmicetlanceLuc', artworkPath + 'SkinCosmicIcon.png')
+    add_dir("[COLOR cyan]lancer :[/COLOR] Skin Arctic Horizon [COLOR lime](1)[/COLOR]", 'horizonetlance', artworkPath + 'skin.arctic.horizon.png')
     #add_dir("[COLOR lime]Paramètres U2P [/COLOR]", 'settings_u2p', artworkPath + 'icon (U2P).png')
     #add_dir("[COLOR magenta]Menu Maj HK2 et Menu Skin Sauvegarde[/COLOR]", 'menumajhk2', artworkPath + 'NETTOYER1.jpg')
     xbmcplugin.endOfDirectory(handle=__handle__, succeeded=True)
@@ -533,15 +498,30 @@ def pistachePoilue():
 
 ##############################################
 
+# MENU CHOIX SKIN U2PLAY Vicqing
+def Vicqing():
+    #choix skin
+    xbmcplugin.setPluginCategory(__handle__, "[COLOR lime]Skin de [/COLOR][COLOR yellow]Vicqing[/COLOR]")
+    xbmcplugin.setContent(__handle__, 'files')
+    add_dir("[COLOR cyan]lancer :[/COLOR] Cosmic [COLOR lime](WIP Alpha)[/COLOR]", 'vicosmicetlance', artworkPath + 'SkinCosmicIcon.png')
+    #add_dir("[COLOR white]Choisir:[/COLOR] Skin Arctic Horizon 2 [COLOR yellow](WIP Alpha)[/COLOR]", 'pistachePoilueAH2', artworkPath + 'icon (AH2).png')
+    #add_dir("[COLOR lime]Lancer:[/COLOR] Skin Arctic Horizon 2 [COLOR yellow](Alpha)[/COLOR]", 'skinAH2pistachePoilue', artworkPath + 'icon (AH2).png')
+    #add_dir("[COLOR lime]Paramètres U2P [/COLOR]", 'settings_u2p', artworkPath + 'icon (U2P).png')
+    #add_dir("[COLOR magenta]Menu Maj HK2 et Menu Skin Sauvegarde[/COLOR]", 'menumajhk2', artworkPath + 'NETTOYER1.jpg')
+    xbmcplugin.endOfDirectory(handle=__handle__, succeeded=True)
+
+##############################################
+
 # MENU CHOIX SKIN U2PLAY Ghantholiny
 def Ghantholiny():
     #choix skin
     xbmcplugin.setPluginCategory(__handle__, "[COLOR lime]Skin de [/COLOR][COLOR yellow]Ghantholiny[/COLOR]")
     xbmcplugin.setContent(__handle__, 'files')
+    add_dir("[COLOR cyan]lancer :[/COLOR] Skin Arctic Horizon 2 [COLOR lime](WIP Alpha)[/COLOR]", 'ChangeSkinarctichorizon2etlance', artworkPath + 'icon (AH2).png')
+    #add_dir("[COLOR cyan]lancer :[/COLOR] Skin Arctic Horizon [COLOR lime](1)[/COLOR]", 'ChangeSkinarctichorizonetlance', artworkPath + 'skin.arctic.horizon.png')
     add_dir("[COLOR cyan]lancer :[/COLOR] Skin Arctic Horizon [COLOR lime](1)[/COLOR]", 'ChangeSkinarctichorizonetlance', artworkPath + 'skin.arctic.horizon.png')
-    #add_dir("[COLOR white]Choisir:[/COLOR] Skin Arctic Horizon [COLOR yellow][/COLOR](1)", 'GhantholinyAH', artworkPath + 'skin.arctic.horizon.png')
     #add_dir("[COLOR lime]Lancer:[/COLOR] Skin Arctic Horizon [COLOR yellow](1)[/COLOR]", 'ChangeSkinarctichorizon', artworkPath + 'mimic.jpg')
-    #add_dir("[COLOR cyan]lancer :[/COLOR] Skin Mimic [COLOR yellow](lr)[/COLOR]", 'GhantholinyMimicetlance', artworkPath + 'mimic.jpg')
+    add_dir("[COLOR cyan]lancer :[/COLOR] Skin Mimic [COLOR yellow](lr)[/COLOR]", 'GhantholinyMimicetlance', artworkPath + 'mimic.jpg')
     #add_dir("[COLOR white]Choisir:[/COLOR] Skin Mimic [COLOR yellow](lr)[/COLOR]", 'GhantholinyMimic', artworkPath + 'mimic.jpg')
     #add_dir("[COLOR lime]Lancer:[/COLOR] Skin Mimic [COLOR yellow](lr)[/COLOR]", 'GhantholinyMimichange', artworkPath + 'mimic.jpg')
     #add_dir("[COLOR lime]Paramètres U2P [/COLOR]", 'settings_u2p', artworkPath + 'icon (U2P).png')
@@ -551,38 +531,46 @@ def Ghantholiny():
 ##############################################
 
 # MENU CHOIX SKIN U2PLAY FanKai
-def FanKai():
+#def FanKai():
     #choix skin
-    xbmcplugin.setPluginCategory(__handle__, "[COLOR lime]Skin de [/COLOR][COLOR yellow]FanKai[/COLOR]")
-    xbmcplugin.setContent(__handle__, 'files')
-    add_dir("[COLOR cyan]installer [/COLOR]FanKai Affiche...[COLOR lime][/COLOR]", 'FanKai', artworkPath + 'FanKai2.jpg')
+    #xbmcplugin.setPluginCategory(__handle__, "[COLOR lime]Skin de [/COLOR][COLOR yellow]FanKai[/COLOR]")
+    #xbmcplugin.setContent(__handle__, 'files')
+    #add_dir("[COLOR cyan]installer [/COLOR]FanKai Affiche...[COLOR lime][/COLOR]", 'FanKai', artworkPath + 'FanKai2.jpg')
     #add_dir("[COLOR lime]Paramètres U2P [/COLOR]", 'settings_u2p', artworkPath + 'icon (U2P).png')
     #add_dir("[COLOR magenta]Menu Maj HK2 et Menu Skin Sauvegarde[/COLOR]", 'menumajhk2', artworkPath + 'NETTOYER1.jpg')
+    #xbmcplugin.endOfDirectory(handle=__handle__, succeeded=True)
+
+##############################################
+
+
+
+##############################################
+
+
+
+##############################################
+def kodi_save_restor():
+    #menu sauvegarde restauration Kodi
+    xbmcplugin.setPluginCategory(__handle__, "[COLOR cyan]Sauvegarde et restauration Kodi[/COLOR]")
+    xbmcplugin.setContent(__handle__, 'files')
+    add_dir("[COLOR lime]Sauvegarder tout [/COLOR][COLOR yellow](addon Backup nécessaire !)[/COLOR]", 'skin_save3', artworkPath + 'icon (backup).png')
+    add_dir("[COLOR yellow]Ouvrir Paramètres Addon Backup [/COLOR]", 'settings_Backup', artworkPath + 'icon (backup).png')
+    add_dir("[COLOR magenta]Restaurer tout [/COLOR][COLOR yellow](addon Backup nécessaire , dans Repo Kodi !)[/COLOR]", 'skin_restor3', artworkPath + 'icon (backup).png')
     xbmcplugin.endOfDirectory(handle=__handle__, succeeded=True)
-
 ##############################################
-
-
-
-##############################################
-
-
-
-##############################################
-
-
-
-##############################################
-
-
-
+def skin_save_restor():
+    #menu sauvegarde restauration skin
+    xbmcplugin.setPluginCategory(__handle__, "[COLOR cyan]Sauvegarde et restauration skin[/COLOR]")
+    xbmcplugin.setContent(__handle__, 'files')
+    add_dir("[COLOR lime]Sauvegarder Skin  [/COLOR][COLOR yellow](addon Skin Helper Service Skin Backup nécessaire, dans Repo Skodi ou Lattsrepo !)[/COLOR]", 'ouvrir_SHSB', artworkPath + 'icon (SHSB).png')
+    xbmcplugin.endOfDirectory(handle=__handle__, succeeded=True)
 ##############################################
 
 # IMPORT CHOIX SKIN
 def importSkin(zipurl):
     # suppression dossier temporaire
-    xbmc.executebuiltin("Notification(DOSSIER TEMP,Effacement en cours...)")
-    dirPath = xbmc.translatePath('special://home/temp/temp/')
+    xbmc.executebuiltin("Notification(DOSSIER TEMP,Effacement en cours...,10)")
+    dirPath = xbmcvfs.translatePath('special://temp/')
     try:
        shutil.rmtree(dirPath)
     except:
@@ -591,13 +579,15 @@ def importSkin(zipurl):
     # telechargement et extraction du zip
     with urlopen(zipurl) as zipresp:
         with ZipFile(BytesIO(zipresp.read())) as zfile:
-            zfile.extractall(xbmc.translatePath('special://home/temp/temp/'))
+            zfile.extractall(xbmcvfs.translatePath('special://temp/'))
     # copie des fichiers extraie
-    source_dir = xbmc.translatePath('special://home/temp/temp/addon_data')
-    destination_dir = xbmc.translatePath('special://home/userdata/addon_data')
+    source_dir = xbmcvfs.translatePath('special://temp/addon_data/')
+    destination_dir = xbmcvfs.translatePath('special://masterprofile/addon_data')
     shutil.copytree(source_dir, destination_dir, dirs_exist_ok=True)
-    xbmc.executebuiltin("Notification(COPIE SKIN OK, Profitez !)")
+    xbmc.executebuiltin("Notification(Copie Skin , OK ,100)")
     xbmc.sleep(1000)
+    xbmc.executebuiltin( 'ReloadSkin()' )
+    xbmc.executebuiltin( "Notification(Rafraichissement Skin , Profitez...,2000)" )
 
 ##############################################
 
@@ -606,16 +596,19 @@ def save_restor():
     #menu sauvegarde restauration
     xbmcplugin.setPluginCategory(__handle__, "[COLOR cyan]Sauvegarde et restauration[/COLOR]")
     xbmcplugin.setContent(__handle__, 'files')
-    add_dir("[COLOR lime]CREER UNE SAUVEGARDE : [/COLOR]", 'skin_save1', artworkPath + 'save.png')
-    add_dir("[COLOR lime]Skin Arctic Horizon 2[/COLOR]", 'skin_save1', artworkPath + 'icon (AH2).png')
-    add_dir("[COLOR lime]Skin Rayflix[/COLOR]", 'skin_save2', artworkPath + 'icon (Ray).png')
-    add_dir("[COLOR lime]Sauvegarder tout [/COLOR][COLOR yellow](addon Backup nécessaire)[/COLOR]", 'skin_save3', artworkPath + 'icon (backup).png')
-    add_dir("[COLOR magenta]RESTAURER UNE SAUVEGARDE : [/COLOR]", 'skin_restor1', artworkPath + 'restaurer.jpg')
-    add_dir("[COLOR magenta]Skin Arctic Horizon 2[/COLOR]", 'skin_restor1', artworkPath + 'icon (AH2).png')
-    add_dir("[COLOR magenta]Skin Rayflix[/COLOR]", 'skin_restor2', artworkPath + 'icon (Ray).png')
-    add_dir("[COLOR magenta]Restaurer tout [/COLOR][COLOR yellow](addon Backup nécessaire)[/COLOR]", 'skin_restor3', artworkPath + 'icon (backup).png')
-    add_dir("[COLOR yellow]Ouvrir Paramètres Addon Backup [/COLOR]", 'settings_Backup', artworkPath + 'icon (backup).png')
+    add_dir("[COLOR lime]CREER UNE SAUVEGARDE DU SKIN[/COLOR]", 'skin_save_restor', artworkPath + 'icon (SHSB).png')
+    #add_dir("[COLOR lime]Skin Arctic Horizon 2[/COLOR]", 'skin_save1', artworkPath + 'icon (AH2).png')
+    #add_dir("[COLOR lime]Skin Rayflix[/COLOR]", 'skin_save2', artworkPath + 'icon (Ray).png')
+    
+    
+    add_dir("[COLOR magenta]CREER UNE SAUVEGARDE KODI[/COLOR]", 'kodi_save_restor', artworkPath + 'icon (backup).png')
+    #add_dir("[COLOR magenta]Skin Arctic Horizon 2[/COLOR]", 'skin_restor1', artworkPath + 'icon (AH2).png')
+    #add_dir("[COLOR magenta]Skin Rayflix[/COLOR]", 'skin_restor2', artworkPath + 'icon (Ray).png')
+    #add_dir("[COLOR magenta]Restaurer Skin  [/COLOR][COLOR yellow](addon Skin Backup nécessaire , dans Repo Skodi!)[/COLOR]", 'skin_restor4', artworkPath + 'icon (backup).png')
+    
+    
     #add_dir("[COLOR cyan]Paramètres U2P [/COLOR]", 'settings_u2p', artworkPath + 'icon (U2P).png')
+    add_dir("[COLOR yellow]Openwizard [/COLOR]", 'ouvrir_openwizard', artworkPath + 'fanart.png')
     xbmcplugin.endOfDirectory(handle=__handle__, succeeded=True)  
 
 ##############################################
@@ -624,45 +617,52 @@ def save_restor():
 def skin_save1():
     xbmc.executebuiltin("Notification(Patienter, Copie en cours...)")
     # COPIE DES DOSSIERS ET FICHIERS DU SKIN
-    source_dir = xbmc.translatePath('special://home/userdata/addon_data/skin.arctic.horizon.2')
-    destination_dir = xbmc.translatePath('special://home/userdata/Sauvegardes/Skin_sauvegarde/AH2/addon_data/skin.arctic.horizon.2')
-    source_dir1 = xbmc.translatePath('special://home/userdata/addon_data/script.skinshortcuts')
-    destination_dir1 = xbmc.translatePath('special://home/userdata/Sauvegardes/Skin_sauvegarde/AH2/addon_data/script.skinshortcuts')
+    source_dir = xbmcvfs.translatePath('special://home/userdata/addon_data/skin.arctic.horizon.2')
+    destination_dir = xbmcvfs.translatePath('special://home/userdata/Sauvegardes/Skin_sauvegarde/AH2/addon_data/skin.arctic.horizon.2')
+    source_dir1 = xbmcvfs.translatePath('special://home/userdata/addon_data/script.skinshortcuts')
+    destination_dir1 = xbmcvfs.translatePath('special://home/userdata/Sauvegardes/Skin_sauvegarde/AH2/addon_data/script.skinshortcuts')
     shutil.copytree(source_dir, destination_dir, dirs_exist_ok=True)
     shutil.copytree(source_dir1, destination_dir1, dirs_exist_ok=True)
     # CREATION ARCHIVE ZIP
-    shutil.make_archive((xbmc.translatePath('special://home/userdata/Sauvegardes/Skin_sauvegarde/Skin_sauvegardeAH2')),'zip',(xbmc.translatePath('special://home/userdata/Sauvegardes/Skin_sauvegarde/AH2')))
+    shutil.make_archive((xbmcvfs.translatePath('special://home/userdata/Sauvegardes/Skin_sauvegarde/Skin_sauvegardeAH2')),'zip',(xbmcvfs.translatePath('special://home/userdata/Sauvegardes/Skin_sauvegarde/AH2')))
     xbmc.executebuiltin("Notification(Skin Arctic H. 2 , Archive zip Créer !)")
     sys.exit()
 
 def skin_save2():
     xbmc.executebuiltin("Notification(PREPARATION DES FICHIERS,Copie en cours...)")
     # COPIE DES DOSSIERS ET FICHIERS DU SKIN
-    source_dir = xbmc.translatePath('special://home/userdata/addon_data/skin.project.aura')
-    destination_dir = xbmc.translatePath('special://home/userdata/addon_data/Scripts/Skin_save/2/addon_data/skin.project.aura')
-    source_dir1 = xbmc.translatePath('special://home/userdata/addon_data/script.skinshortcuts')
-    destination_dir1 = xbmc.translatePath('special://home/userdata/addon_data/Scripts/Skin_save/2/addon_data/script.skinshortcuts')
-    source_dir2 = xbmc.translatePath('special://home/addons/skin.project.aura/1080i/script-skinshortcuts-includes.xml')
-    destination_dir2 = xbmc.translatePath('special://home/userdata/addon_data/Scripts/Skin_save/2/addons/skin.project.aura/1080i/script-skinshortcuts-includes.xml')
+    source_dir = xbmcvfs.translatePath('special://home/userdata/addon_data/skin.project.aura')
+    destination_dir = xbmcvfs.translatePath('special://home/userdata/addon_data/Scripts/Skin_save/2/addon_data/skin.project.aura')
+    source_dir1 = xbmcvfs.translatePath('special://home/userdata/addon_data/script.skinshortcuts')
+    destination_dir1 = xbmcvfs.translatePath('special://home/userdata/addon_data/Scripts/Skin_save/2/addon_data/script.skinshortcuts')
+    source_dir2 = xbmcvfs.translatePath('special://home/addons/skin.project.aura/1080i/script-skinshortcuts-includes.xml')
+    destination_dir2 = xbmcvfs.translatePath('special://home/userdata/addon_data/Scripts/Skin_save/2/addons/skin.project.aura/1080i/script-skinshortcuts-includes.xml')
     shutil.copytree(source_dir, destination_dir, dirs_exist_ok=True)
     shutil.copytree(source_dir1, destination_dir1, dirs_exist_ok=True)
     shutil.copy(source_dir2, destination_dir2)
     # CREATION ARCHIVE ZIP
-    shutil.make_archive((xbmc.translatePath('special://home/userdata/addon_data/Scripts/Skin_save/Skin_save1')),'zip',(xbmc.translatePath('special://home/userdata/addon_data/Scripts/Skin_save/2')))
+    shutil.make_archive((xbmcvfs.translatePath('special://home/userdata/addon_data/Scripts/Skin_save/Skin_save1')),'zip',(xbmcvfs.translatePath('special://home/userdata/addon_data/Scripts/Skin_save/2')))
     xbmc.executebuiltin("Notification(SKIN SAUVEGARDE, Archive ZIP créée !)")
     sys.exit()
 
 def skin_save3():
-    #source_dir = xbmc.translatePath('special://home/addons/plugin.program.Skodi/resources/script.xbmcbackup')
-    #destination_dir = xbmc.translatePath('special://home/userdata/addon_data/script.xbmcbackup')
+    #source_dir = xbmcvfs.translatePath('special://home/addons/plugin.program.Skodi/resources/script.xbmcbackup')
+    #destination_dir = xbmcvfs.translatePath('special://home/userdata/addon_data/script.xbmcbackup')
     #shutil.copytree(source_dir, destination_dir, dirs_exist_ok=True)
     #xbmc.sleep(1000)
     xbmc.executebuiltin('RunScript(script.xbmcbackup,mode=backup)')
 
+def skin_save4():
+   xbmc.executebuiltin('RunScript(script.skin.helper.skinbackup,action=backup)')              
+
+
+
+
+
 #def AddonbBackupKodi():
     #xbmc.executebuiltin('Addon.OpenSettings(script.xbmcbackup)')  
-    #source_dir = xbmc.translatePath('special://home/addons/plugin.program.Skodi/resources/script.xbmcbackup')
-    #destination_dir = xbmc.translatePath('special://home/userdata/addon_data/script.xbmcbackup')
+    #source_dir = xbmcvfs.translatePath('special://home/addons/plugin.program.Skodi/resources/script.xbmcbackup')
+    #destination_dir = xbmcvfs.translatePath('special://home/userdata/addon_data/script.xbmcbackup')
     #shutil.copytree(source_dir, destination_dir, dirs_exist_ok=True)
     #xbmc.sleep(1000)
     #xbmc.executebuiltin('RunScript(script.xbmcbackup)')
@@ -675,10 +675,10 @@ def skin_save3():
 # RESTAURATION
 def skin_restor1():
     # copie des fichiers sauvegarde
-    source_dir = xbmc.translatePath('special://home/userdata/Sauvegardes/Skin_sauvegarde/AH2/addon_data')
-    destination_dir = xbmc.translatePath('special://home/userdata/addon_data')
-    source_dir1 = xbmc.translatePath('special://home/userdata/Sauvegardes/Skin_sauvegarde/AH2/addon_data')
-    destination_dir1 = xbmc.translatePath('special://home/userdata/addon_data')
+    source_dir = xbmcvfs.translatePath('special://home/userdata/Sauvegardes/Skin_sauvegarde/AH2/addon_data')
+    destination_dir = xbmcvfs.translatePath('special://home/userdata/addon_data')
+    source_dir1 = xbmcvfs.translatePath('special://home/userdata/Sauvegardes/Skin_sauvegarde/AH2/addon_data')
+    destination_dir1 = xbmcvfs.translatePath('special://home/userdata/addon_data')
     shutil.copytree(source_dir, destination_dir, dirs_exist_ok=True)
     shutil.copytree(source_dir1, destination_dir1, dirs_exist_ok=True)
     xbmc.executebuiltin("Notification(COPIE OK,Mise à jour effectuée !)")
@@ -691,10 +691,10 @@ def skin_restor1():
 
 def skin_restor2():
     # copie des fichiers sauvegarde
-    source_dir = xbmc.translatePath('special://home/userdata/addon_data/Scripts/Skin_save/2/addon_data')
-    destination_dir = xbmc.translatePath('special://home/userdata/addon_data')
-    source_dir2 = xbmc.translatePath('special://home/userdata/addon_data/Scripts/Skin_save/2/addons/skin.project.aura')
-    destination_dir2 = xbmc.translatePath('special://home/addons/skin.project.aura')
+    source_dir = xbmcvfs.translatePath('special://home/userdata/addon_data/Scripts/Skin_save/2/addon_data')
+    destination_dir = xbmcvfs.translatePath('special://home/userdata/addon_data')
+    source_dir2 = xbmcvfs.translatePath('special://home/userdata/addon_data/Scripts/Skin_save/2/addons/skin.project.aura')
+    destination_dir2 = xbmcvfs.translatePath('special://home/addons/skin.project.aura')
     shutil.copytree(source_dir, destination_dir, dirs_exist_ok=True)
     shutil.copytree(source_dir2, destination_dir2, dirs_exist_ok=True)
     xbmc.executebuiltin("Notification(COPIE OK,Mise à jour effectuée !)")
@@ -709,6 +709,9 @@ def skin_restor3():
     xbmc.executebuiltin('RunScript(script.xbmcbackup,mode=restore)')
 
 
+def skin_restor4():
+    xbmc.executebuiltin('RunScript(script.skin.helper.skinbackup,action=restore)')
+             
 ##############################################
 
 # MENU MAJ DATABASE
@@ -717,10 +720,10 @@ def menumajhk2():
     xbmcplugin.setPluginCategory(__handle__, "[COLOR yellow]Mise a Jour Database HK2[/COLOR]")
     xbmcplugin.setContent(__handle__, 'files')
     add_dir("[COLOR lime]- Paramètres U2P [/COLOR]", 'settings_u2p', artworkPath + 'icon (U2P).png')
-    add_dir("[COLOR lime]- M.A.J HK2 et Skin rafraichissement[/COLOR]", 'forcermaj', artworkPath + 'fanart (U2P).jpg')
-    add_dir("[COLOR lime]- M.A.J HK2 seulement (rapide)[/COLOR]", 'actuskin', artworkPath + 'fanart (U2P).jpg')
+    add_dir("[COLOR lime]- M.A.J HK2 et Skin rafraichissement[/COLOR]", 'actuskin', artworkPath + 'icon (U2P).png')
+    add_dir("[COLOR lime]- M.A.J HK2 seulement (rapide)[/COLOR]", 'forcermaj', artworkPath + 'icon (U2P).png')
     #add_dir("[COLOR red]En cas de soucis [/COLOR][COLOR deepskyblue]CHANGER COMPTES PREMIUM ALEATOIRE[/COLOR]", 'menuKey', artworkPath + 'icone.png')
-    add_dir("[COLOR cyan]-- Menu Sauvegarde des Skins[/COLOR]", 'save_restor', artworkPath + 'save.png')
+    add_dir("[COLOR cyan]-- Menu Sauvegarde [/COLOR]", 'save_restor', artworkPath + 'save.png')
     add_dir("[COLOR magenta]--- Menu Nettoyage [/COLOR](Attention !)", 'nettoye', artworkPath + 'cleaning-thumbnail.png')
     #add_dir("SKIN FULL [COLOR deepskyblue](le + gourmand)[/COLOR]", 'hk2full', artworkPath + 'icone.png')
     #add_dir("SKIN KIDS [COLOR deepskyblue](special enfants)[/COLOR]", 'hk2kids', artworkPath + 'icone.png')
@@ -729,11 +732,11 @@ def menumajhk2():
 
 def forcermaj():
     # forcer maj
-    xbmc.executebuiltin('RunScript(special://home/addons/service.U2PplayMaj/U2PplayFast.py,True)') 
+    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/U2PplayFast.py,True)') 
     
 def actuskin():
     # actualiser 
-    xbmc.executebuiltin('RunScript(special://home/addons/service.U2PplayMaj/U2Pplay.py,True)')
+    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/U2Pplay.py,True)')
 
 ##############################################
 
@@ -756,7 +759,7 @@ def vider_cache():
     #nettoyer tout
     xbmc.executebuiltin("Notification(FICHIER TEMP,Effacement en cours...)")
     # suppression dossier temporaire
-    dirPath = xbmc.translatePath('special://home/temp/temp/')
+    dirPath = xbmcvfs.translatePath('special://home/temp/temp/')
     try:
        shutil.rmtree(dirPath)
     except:
@@ -764,7 +767,7 @@ def vider_cache():
     xbmc.sleep(1000)
     xbmc.executebuiltin("Notification(DOSSIER PACKAGES,Effacement en cours...)")
     # suppression dossier packages
-    dirPath = xbmc.translatePath('special://home/addons/packages/')
+    dirPath = xbmcvfs.translatePath('special://home/addons/packages/')
     try:
        shutil.rmtree(dirPath)
     except:
@@ -772,7 +775,7 @@ def vider_cache():
     xbmc.sleep(1000)
     xbmc.executebuiltin("Notification(DOSSIER THUMBNAILS,Effacement en cours...)")
     # suppression dossier thumbnails
-    dirPath = xbmc.translatePath('special://home/userdata/Thumbnails/')
+    dirPath = xbmcvfs.translatePath('special://home/userdata/Thumbnails/')
     try:
        shutil.rmtree(dirPath)
     except:
@@ -780,7 +783,7 @@ def vider_cache():
     xbmc.sleep(1000)
     xbmc.executebuiltin("Notification(CACHE TEMP,Effacement en cours...)")
     # suppression dossier cache
-    dirPath = xbmc.translatePath('special://home/cache/temp/')
+    dirPath = xbmcvfs.translatePath('special://home/cache/temp/')
     try:
        shutil.rmtree(dirPath)
     except:
@@ -800,7 +803,7 @@ def cache_seul():
     #nettoyaer cache uniquement
     xbmc.executebuiltin("Notification(CACHE TEMP,Effacement en cours...)")
     # suppression dossier cache
-    dirPath = xbmc.translatePath('special://home/cache/temp/')
+    dirPath = xbmcvfs.translatePath('special://home/cache/temp/')
     try:
        shutil.rmtree(dirPath)
     except:
@@ -818,7 +821,7 @@ def tmp_seul():
     #nettoyaer tmp uniquement
     xbmc.executebuiltin("Notification(FICHIER TEMP,Effacement en cours...)")
     # suppression dossier temporaire
-    dirPath = xbmc.translatePath('special://home/temp/temp/')
+    dirPath = xbmcvfs.translatePath('special://home/temp/temp/')
     try:
        shutil.rmtree(dirPath)
     except:
@@ -836,7 +839,7 @@ def package_seul():
     #nettoyaer packages uniquement
     xbmc.executebuiltin("Notification(DOSSIER PACKAGES,Effacement en cours...)")
     # suppression dossier packages
-    dirPath = xbmc.translatePath('special://home/addons/packages/')
+    dirPath = xbmcvfs.translatePath('special://home/addons/packages/')
     try:
        shutil.rmtree(dirPath)
     except:
@@ -854,7 +857,7 @@ def thumb_seul():
     #nettoyaer thumbnails uniquement
     xbmc.executebuiltin("Notification(DOSSIER THUMBNAILS,Effacement en cours...)")
     # suppression dossier thumbnails
-    dirPath = xbmc.translatePath('special://home/userdata/Thumbnails/')
+    dirPath = xbmcvfs.translatePath('special://home/userdata/Thumbnails/')
     try:
        shutil.rmtree(dirPath)
     except:
@@ -957,12 +960,16 @@ def ChangeSkinmimiclretlance():
 def GhantholinyMimichange():
     xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/ChangeSkin-skin.mimic.lr.py)') 
 def GhantholinyMimicetlance():
-    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/testprofileGhantholinyMimic.py)')        
+    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/testprofileGhantholinyMimic.py)') 
+def horizonetlance():
+    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/testprofileskin.arctic.horizonLuc.py)')       
 # ChangeSkin-Ghantholiny
 def ChangeSkinarctichorizon():
     xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/ChangeSkin-skin.arctic.horizon.py)')
 def ChangeSkinarctichorizonetlance():
-    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/testprofileskin.arctic.horizonGhantholiny.py)')     
+    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/testprofileskin.arctic.horizonGhantholiny.py)')   
+def ChangeSkinarctichorizon2etlance():
+    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/skin.arctic.horizon2Ghantholiny.py)')        
 # ChangeSkin-ProjectAura
 def ChangeSkinsProjectAura():
     xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/ChangeSkin-skin.project.aura.py)')
@@ -974,6 +981,10 @@ def ChangeSkinsProjectAurahk2kidsetlance():
     xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/testprofilesChangeSkinsProjectAurahk2kidsetlance.py)') 
 def ChangeSkinsProjectAurahk2retretlance():
     xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/testprofilesChangeSkinsProjectAurahk2retretlance.py)')
+def vicosmicetlance():
+    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/skinVicosmic.py)')
+def vicosmicetlanceLuc():
+    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/Lucosmic.py)')
 
 
 ##############################################
@@ -982,15 +993,15 @@ def router(paramstring):
     params = dict(parse_qsl(paramstring))    
     dictActions = {
         #key uptobox
-        'menuKey':(menuKey, ""),
+        #'menuKey':(menuKey, ""),
         #skin
-        'hk2lite': (importSkin, 'https://github.com/prf2/pack/raw/kodi/hk2_light.zip'),
-        'hk2full': (importSkin, 'https://github.com/prf2/pack/raw/kodi/hk2_full.zip'),
-        'hk2kids': (importSkin, 'https://github.com/prf2/pack/raw/kodi/hk2_kids.zip'),
-        'hk2leger': (importSkin, 'https://github.com/prf2/pack/raw/kodi/hk2_light.zip'),
-        'hk2complet': (importSkin, 'https://github.com/prf2/pack/raw/kodi/hk2_full.zip'),
-        'hk2enfants': (importSkin, 'https://github.com/prf2/pack/raw/kodi/hk2_kids.zip'),
-        'hk2retro': (importSkin, 'https://github.com/prf2/pack/raw/kodi/hk2_retro.zip'),
+        'hk2lite': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/RayFlix/hk2_light/hk2_light.zip'),
+        'hk2full': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/RayFlix/hk2_full/hk2_full.zip'),
+        'hk2kids': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/RayFlix/hk2_kids/hk2_kids.zip'),
+        'hk2leger': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/RayFlix/hk2_light/hk2_light.zip'),
+        'hk2complet': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/RayFlix/hk2_full/hk2_full.zip'),
+        'hk2enfants': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/RayFlix/hk2_kids/hk2_kids.zip'),
+        'hk2retro': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/RayFlix/hk2_retro/hk2_retro.zip'),
         'hk2AH2': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/AH2_HK2.zip'),
         'titanbingieCoKo': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/Skin_Titan_BINGIE_MOD.zip'),
         'SkinCoKopacetic': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/Skin_Copacetic.zip'), 
@@ -1001,10 +1012,14 @@ def router(paramstring):
         'Luc562AH2': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/luc562/skin.arctic.horizon.2.zip'),   
         'Luc562Aeon': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/luc562/skin.aeon.nox.silvo.zip'),
         'Luc562Mimic': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/luc562/skin.mimic.lr.zip'),
+        'Luc562AH1': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/luc562/skin.arctic.horizon.zip'), 
         'pistachePoilueAH2': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/pistachePoilue/skin.arctic.horizon.2.zip'),   
-        'GhantholinyAH': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/Ghantholiny/skin.arctic.horizon.zip'), 
-        'GhantholinyMimic': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/Ghantholiny/sin.mimic.lr.zip'), 
-        'FanKai': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/FanKai/fankai.zip'),
+        'GhantholinyAH': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/Ghantholiny/skin.arctic.horizon.zip'),
+        'GhantholinyAH2': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/Ghantholiny/skin.artic.horizon.2.zip'),
+        'GhantholinyMimic': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/Ghantholiny/sin.mimic.lr.zip'),
+        'vicosmic': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/Vicing/CosmicVic.zip'), 
+        'Lucosmic': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/luc562/skin.cosmic.zip'),
+        #'FanKai': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/FanKai/fankai.zip'),
         #Choiir et Lancer Skin
         'ChangeSkinAH2CoKo': (ChangeSkinAH2CoKo, ""),
         'skinAH2bePurple': (skinAH2bePurple, ""),
@@ -1031,10 +1046,14 @@ def router(paramstring):
         'GhantholinyMimicetlance': (GhantholinyMimicetlance, ""),
         'GhantholinyMimichange': (GhantholinyMimichange, ""),
         'ChangeSkinarctichorizonetlance': (ChangeSkinarctichorizonetlance, ""),
+        'horizonetlance': (horizonetlance, ""),
+        'ChangeSkinarctichorizon2etlance': (ChangeSkinarctichorizon2etlance, ""),
         'ChangeSkinsProjectAuraliteetlance': (ChangeSkinsProjectAuraliteetlance, ""),
         'ChangeSkinsProjectAurahk2fulletlance': (ChangeSkinsProjectAurahk2fulletlance, ""),
         'ChangeSkinsProjectAurahk2kidsetlance': (ChangeSkinsProjectAurahk2kidsetlance, ""),
         'ChangeSkinsProjectAurahk2retretlance': (ChangeSkinsProjectAurahk2retretlance, ""),
+        'vicosmicetlance': (vicosmicetlance, ""),
+        'vicosmicetlanceLuc': (vicosmicetlanceLuc, ""),
         #skin HK2
         'hk2': (hk2, ""),
         'rayhk2': (rayhk2, ""),
@@ -1043,8 +1062,9 @@ def router(paramstring):
         'bePurple': (bePurple, ""),
         'Luc562': (Luc562, ""),
         'pistachePoilue': (pistachePoilue, ""),
+        'Vicqing': (Vicqing, ""),
         'Ghantholiny': (Ghantholiny, ""), 
-        'FanKai': (FanKai, ""), 
+        #'FanKai': (FanKai, ""), 
         #Maj autoexec HK2             
         'db_auto': (db_auto, ""),
         'db_auto_no': (db_auto_no, ""),
@@ -1062,12 +1082,16 @@ def router(paramstring):
         'nettoye': (nettoye, ""),
         #sauvegarde restauration
         'save_restor': (save_restor, ""),
+        'skin_save_restor': (skin_save_restor, ""),
+        'kodi_save_restor': (kodi_save_restor, ""),
         'skin_save1': (skin_save1, ""), 
         'skin_save2': (skin_save2, ""), 
         'skin_save3': (skin_save3, ""), 
+        'skin_save4': (skin_save3, ""),
         'skin_restor1': (skin_restor1, ""), 
         'skin_restor2': (skin_restor2, ""), 
         'skin_restor3': (skin_restor3, ""),
+        'skin_restor4': (skin_restor3, ""),
         #'AddonbBackupKodi': (AddonbBackupKodi, ""),
         #'AddonbBackupKodiSettings': (AddonbBackupKodiSettings, ""),         
         #autres
@@ -1085,6 +1109,9 @@ def router(paramstring):
         'inst_skin': (inst_skin, ""),
         'settings_u2p': (settings_u2p, ""),
         'ouvrir_u2p': (ouvrir_u2p, ""),
+        'ouvrir_SHSB': (ouvrir_SHSB, ""),
+        'ouvrir_openwizard': (ouvrir_openwizard, ""),
+        'alladdon': (alladdon, ""),
         'settings_Backup': (settings_Backup, ""),
         }
         
