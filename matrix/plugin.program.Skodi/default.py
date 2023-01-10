@@ -404,11 +404,12 @@ def hk2():
     xbmcplugin.setContent(__handle__, 'files')
     add_dir("Skins de [COLOR yellow](CoKodico)[/COLOR]", 'CoKo', artworkPath + 'icon (CoKodico).jpg')
     add_dir("Skins de [COLOR yellow](Luc562)[/COLOR]", 'Luc562', artworkPath + 'Luc562logos.png')
+    add_dir("Skins de [COLOR yellow](Bazogueur Tobal)[/COLOR]", 'BazogueurTobal', artworkPath + 'BazogueurTobal.png')
     add_dir("Skins de [COLOR yellow](Rayflix)[/COLOR]", 'rayhk2', artworkPath + 'icon (Ray).png')
-    add_dir("Skins de [COLOR yellow](pistachePoilue)[/COLOR]", 'pistachePoilue', artworkPath + 'pistache.jpg')
-    add_dir("Skins de [COLOR yellow](Vicqing)[/COLOR]", 'Vicqing', artworkPath + 'VicQing.png')
-    add_dir("Skins de [COLOR yellow](bePurple)[/COLOR]", 'bePurple', artworkPath + 'bePurple.jpg')
     add_dir("Skins de [COLOR yellow](Ghantholiny)[/COLOR]", 'Ghantholiny', artworkPath + 'ghantholiny.png')
+    add_dir("Skins de [COLOR yellow](Vicqing)[/COLOR]", 'Vicqing', artworkPath + 'VicQing.png')
+    add_dir("Skins de [COLOR yellow](pistachePoilue)[/COLOR]", 'pistachePoilue', artworkPath + 'pistache.jpg')
+    add_dir("Skins de [COLOR yellow](bePurple)[/COLOR]", 'bePurple', artworkPath + 'bePurple.jpg')
     #add_dir("Skins de [COLOR yellow](FanKai)[/COLOR]", 'FanKai', artworkPath + 'FanKai.png')
     #add_dir("[COLOR lime]Paramètres U2P [/COLOR]", 'settings_u2p', artworkPath + 'icon (U2P).png')
     add_dir("[COLOR magenta]Menu Maj HK2 et Menu Skin Sauvegarde[/COLOR]", 'menumajhk2', artworkPath + 'NETTOYER1.jpg')
@@ -490,10 +491,6 @@ def pistachePoilue():
     xbmcplugin.setPluginCategory(__handle__, "[COLOR lime]Skin de [/COLOR][COLOR yellow]pistachePoilue[/COLOR]")
     xbmcplugin.setContent(__handle__, 'files')
     add_dir("[COLOR cyan]lancer :[/COLOR] Skin Arctic Horizon 2 [COLOR lime](WIP Alpha)[/COLOR]", 'skinAH2pistachePoilueetlance', artworkPath + 'icon (AH2).png')
-    #add_dir("[COLOR white]Choisir:[/COLOR] Skin Arctic Horizon 2 [COLOR yellow](WIP Alpha)[/COLOR]", 'pistachePoilueAH2', artworkPath + 'icon (AH2).png')
-    #add_dir("[COLOR lime]Lancer:[/COLOR] Skin Arctic Horizon 2 [COLOR yellow](Alpha)[/COLOR]", 'skinAH2pistachePoilue', artworkPath + 'icon (AH2).png')
-    #add_dir("[COLOR lime]Paramètres U2P [/COLOR]", 'settings_u2p', artworkPath + 'icon (U2P).png')
-    #add_dir("[COLOR magenta]Menu Maj HK2 et Menu Skin Sauvegarde[/COLOR]", 'menumajhk2', artworkPath + 'NETTOYER1.jpg')
     xbmcplugin.endOfDirectory(handle=__handle__, succeeded=True)
 
 ##############################################
@@ -530,6 +527,15 @@ def Ghantholiny():
 
 ##############################################
 
+# MENU CHOIX SKIN U2PLAY Bazogueur tobal
+def BazogueurTobal():
+    #choix skin
+    xbmcplugin.setPluginCategory(__handle__, "[COLOR lime]Skin de [/COLOR][COLOR yellow]Bazogueur tobal[/COLOR]")
+    xbmcplugin.setContent(__handle__, 'files')
+    add_dir("[COLOR cyan]lancer :[/COLOR] Skin Arctic: Zephyr  [COLOR red](Reloaded)[/COLOR]", 'BazogueurTobalLanceZephyr', artworkPath + 'skin.arctic.zephyr.mod.png')
+    xbmcplugin.endOfDirectory(handle=__handle__, succeeded=True)
+
+##############################################
 # MENU CHOIX SKIN U2PLAY FanKai
 #def FanKai():
     #choix skin
@@ -986,7 +992,8 @@ def vicosmicetlance():
 def vicosmicetlanceLuc():
     xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/Lucosmic.py)')
 
-
+def BazogueurTobalLanceZephyr():
+    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/BazogueurTobalLance.py)')
 ##############################################
 
 def router(paramstring):
@@ -1013,7 +1020,8 @@ def router(paramstring):
         'Luc562Aeon': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/luc562/skin.aeon.nox.silvo.zip'),
         'Luc562Mimic': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/luc562/skin.mimic.lr.zip'),
         'Luc562AH1': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/luc562/skin.arctic.horizon.zip'), 
-        'pistachePoilueAH2': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/pistachePoilue/skin.arctic.horizon.2.zip'),   
+        'pistachePoilueAH2': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/pistachePoilue/skin.arctic.horizon.2.zip'),
+        'BazogueurTobalLance': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/BazogueurTobal/skin.arctic.zephyr.mod.zip'),   
         'GhantholinyAH': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/Ghantholiny/skin.arctic.horizon.zip'),
         'GhantholinyAH2': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/Ghantholiny/skin.artic.horizon.2.zip'),
         'GhantholinyMimic': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/Ghantholiny/sin.mimic.lr.zip'),
@@ -1037,6 +1045,9 @@ def router(paramstring):
         'skinAH2bePurpleetlance': (skinAH2bePurpleetlance, ""),
         'skinLuc562AH2etlance': (skinLuc562AH2etlance, ""),
         'skinAH2pistachePoilueetlance': (skinAH2pistachePoilueetlance, ""),
+        'BazogueurTobal': (BazogueurTobal, ""),
+        'BazogueurTobalLance': (BazogueurTobalLance, ""),
+        'BazogueurTobalLanceZephyr': (BazogueurTobalLanceZephyr, ""),
         'ChangeSkinbingieCoKoetlance': (ChangeSkinbingieCoKoetlance, ""),
         'ChangeSkincopacetiCoKoetlance': (ChangeSkincopacetiCoKoetlance, ""),
         'ChangeSkinAeonMQ8CoKoetlance': (ChangeSkinAeonMQ8CoKoetlance, ""),
