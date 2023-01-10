@@ -532,7 +532,7 @@ def BazogueurTobal():
     #choix skin
     xbmcplugin.setPluginCategory(__handle__, "[COLOR lime]Skin de [/COLOR][COLOR yellow]Bazogueur tobal[/COLOR]")
     xbmcplugin.setContent(__handle__, 'files')
-    add_dir("[COLOR cyan]lancer :[/COLOR] Skin Arctic: Zephyr  [COLOR red](Reloaded)[/COLOR]", 'BazogueurTobalLanceZephyr', artworkPath + 'skin.arctic.zephyr.mod.png')
+    add_dir("[COLOR cyan]lancer :[/COLOR] Skin Arctic: Zephyr  [COLOR red](Reloaded)[/COLOR]", 'BazogueurTobaLanceZephyr', artworkPath + 'skin.arctic.zephyr.mod.png')
     xbmcplugin.endOfDirectory(handle=__handle__, succeeded=True)
 
 ##############################################
@@ -992,8 +992,8 @@ def vicosmicetlance():
 def vicosmicetlanceLuc():
     xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/Lucosmic.py)')
 
-def BazogueurTobalLanceZephyr():
-    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/BazogueurTobalLance.py)')
+def BazogueurTobaLanceZephyr():
+    xbmc.executebuiltin('RunScript(special://home/addons/plugin.program.Skodi/resources/BazogueurTobaLance.py)')
 ##############################################
 
 def router(paramstring):
@@ -1021,7 +1021,7 @@ def router(paramstring):
         'Luc562Mimic': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/luc562/skin.mimic.lr.zip'),
         'Luc562AH1': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/luc562/skin.arctic.horizon.zip'), 
         'pistachePoilueAH2': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/pistachePoilue/skin.arctic.horizon.2.zip'),
-        'BazogueurTobalLance': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/BazogueurTobal/skin.arctic.zephyr.mod.zip'),   
+        'BazogueurTobaLance': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/BazogueurTobal/skin.arctic.zephyr.mod.zip'),   
         'GhantholinyAH': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/Ghantholiny/skin.arctic.horizon.zip'),
         'GhantholinyAH2': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/Ghantholiny/skin.artic.horizon.2.zip'),
         'GhantholinyMimic': (importSkin, 'https://github.com/UpKobox/Skodi/raw/main/SKIN/Ghantholiny/sin.mimic.lr.zip'),
@@ -1046,8 +1046,7 @@ def router(paramstring):
         'skinLuc562AH2etlance': (skinLuc562AH2etlance, ""),
         'skinAH2pistachePoilueetlance': (skinAH2pistachePoilueetlance, ""),
         'BazogueurTobal': (BazogueurTobal, ""),
-        'BazogueurTobalLance': (BazogueurTobalLance, ""),
-        'BazogueurTobalLanceZephyr': (BazogueurTobalLanceZephyr, ""),
+        'BazogueurTobaLanceZephyr': (BazogueurTobaLanceZephyr, ""),
         'ChangeSkinbingieCoKoetlance': (ChangeSkinbingieCoKoetlance, ""),
         'ChangeSkincopacetiCoKoetlance': (ChangeSkincopacetiCoKoetlance, ""),
         'ChangeSkinAeonMQ8CoKoetlance': (ChangeSkinAeonMQ8CoKoetlance, ""),
