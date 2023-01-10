@@ -130,14 +130,14 @@
             <fanart>fanart.jpg</fanart>
         </assets>
     </extension>
-</addon><addon id="service.majhk" name="[COLOR orange]U2P Maj Rapide HK² (Bannière)[/COLOR]" version="1.1.5" provider-name="CoKodiCo">
+</addon><addon id="service.majhk" name="[COLOR orange]U2P Maj Rapide HK² (Bannière)[/COLOR]" version="1.1.6" provider-name="CoKodiCo">
     <requires>
     <import addon="xbmc.python" version="3.0.0" />
     <import addon="script.module.requests" version="2.12.4" />
   </requires>
   <extension point="xbmc.service" library="service.py" />
   <extension point="xbmc.addon.metadata">
-        <summary lang="en_GB">U2P Maj Rapide db HK² (Bannière)</summary>
+        <summary lang="en_GB">[COLOR orange]U2P Maj Rapide HK² (Bannière)[/COLOR]</summary>
         <description lang="en_GB">Maj Rapide db HK² Auto au lancement Kodi (Avec bannière). Puis Auto par intervalle (Avec bannière) et Forcée (Avec bannière ou Sans), ensuite.                                                                                                                                                                [COLOR red](ATTENTION!) Un SEUL addon service U2P Maj. Doit être lancé au démarrage de Kodi![/COLOR]</description>
         <language />
         <platform>all</platform>
