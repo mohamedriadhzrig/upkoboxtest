@@ -4829,6 +4829,40 @@ def majHkcron():
     threading.Thread(name="maj", target=scraperUPTO.majHkNewStart).start()
 
 
+
+def intmajbann15():
+    #init addon
+    addon = xbmcaddon.Addon("plugin.video.sendtokodiU2P")
+    #Change valeur
+    addon.setSetting(id="intmaj", value="15")
+    addon.setSetting(id="delaimaj", value="0")
+    #recup valeur intmaj
+    intmaj = addon.getSetting("intmaj")
+    #recup delaimaj
+    delaimaj = addon.getSetting("delaimaj")
+    # si vide
+    if intmaj:
+        dialog = xbmcgui.Dialog()
+        d = dialog.input("Intervalle Maj: ", type=xbmcgui.INPUT_ALPHANUM)
+        if d:
+            intmaj = d
+            addon.setSetting(id="intmaj", value=d.strip())
+        else:
+            return
+    # si delaimaj vide
+    if delaimaj:
+        dialog = xbmcgui.Dialog()
+        d = dialog.input("Delai Maj: ", type=xbmcgui.INPUT_ALPHANUM)
+        if d:
+            delaimaj = d
+            addon.setSetting(id="delaimaj", value=d.strip())
+        else:
+            return
+    notice(intmaj)
+    notice(delaimaj)
+    showInfoNotification(intmaj + " " + delaimaj)
+
+
 def router(paramstring):
     params = dict(parse_qsl(paramstring))
 
@@ -4878,7 +4912,7 @@ def router(paramstring):
         "suiteSerieHK": (createbdhk.suiteSerie, params), "suiteSerieHK2": (createbdhk.suiteSerie2, ""), "resetBDhkNew": (scraperUPTO.resetBDhkNew, ""), "lockRepHK": (uptobox.lockRep, params),
         "tmdbSerie": (createbdhk.tmdbSerie, params), "majhkneww": (scraperUPTO.majHkNew, ''), "findf": (createbdhk.rechercheFilm, params), "findss": (createbdhk.rechercheSerie, params),
         "findc": (affSearchCast, params),  "mepautostart": (mepAutoStart, ""), "affbaext": (createbdhk.affbaext, ""), "affbacat": (createbdhk.affbacat, params), "playMediabaext": (uptobox.playMediabaext, params),
-        "affbacattmdb": (createbdhk.affbacattmdb, params), "updateba": (importDatabase, "ba"), "majhkcron": (majHkcron, ''),  "mepautostart2": (mepAutoStart2, ""),
+        "affbacattmdb": (createbdhk.affbacattmdb, params), "updateba": (importDatabase, "ba"), "intmajbann15": (intmajbann15, ''), "majhkcron": (majHkcron, ''),  "mepautostart2": (mepAutoStart2, ""),
         }
     if vIPTV:
         dictActionsIPTV = { "iptvLoad": (iptv.menu, ""), "affChaine": (iptv.affChaines, params), "playMediaIptv": (iptv.playMedia, params), "ajoutIPTV": (iptv.ajoutIPTV, ""), "loadF": (iptv.load, params),
