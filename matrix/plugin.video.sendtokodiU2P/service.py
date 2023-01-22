@@ -3351,7 +3351,6 @@ def playMediaHK(params):
 
     return
 
-
 def playMediaOld(params):
     result = getParams(params['lien'])
     if result and "url" in result.keys():
@@ -4843,7 +4842,7 @@ def intmajbann15():
     # si vide
     if intmaj:
         dialog = xbmcgui.Dialog()
-        d = dialog.input("Intervalle Maj: ", type=xbmcgui.INPUT_ALPHANUM)
+        d = dialog.input("Intervalle des Maj en minutes: [0|5|15|30|45|60|120|240]", type=xbmcgui.INPUT_ALPHANUM)
         if d:
             intmaj = d
             addon.setSetting(id="intmaj", value=d.strip())
@@ -4852,7 +4851,7 @@ def intmajbann15():
     # si delaimaj vide
     if delaimaj:
         dialog = xbmcgui.Dialog()
-        d = dialog.input("Delai Maj: ", type=xbmcgui.INPUT_ALPHANUM)
+        d = dialog.input("Délai de la 1ère Maj en minutes: Au démarrage de Kodi", type=xbmcgui.INPUT_ALPHANUM)
         if d:
             delaimaj = d
             addon.setSetting(id="delaimaj", value=d.strip())
@@ -4861,6 +4860,18 @@ def intmajbann15():
     notice(intmaj)
     notice(delaimaj)
     showInfoNotification(intmaj + " " + delaimaj)
+
+def rskin2():
+    #init addon
+    addon = xbmcaddon.Addon("plugin.video.sendtokodiU2P")
+    #Change valeur
+    addon.setSetting(id="rskin", value="true")
+
+def rskin3():
+    #init addon
+    addon = xbmcaddon.Addon("plugin.video.sendtokodiU2P")
+    #Change valeur
+    addon.setSetting(id="rskin", value="false")
 
 
 def router(paramstring):
@@ -4912,7 +4923,7 @@ def router(paramstring):
         "suiteSerieHK": (createbdhk.suiteSerie, params), "suiteSerieHK2": (createbdhk.suiteSerie2, ""), "resetBDhkNew": (scraperUPTO.resetBDhkNew, ""), "lockRepHK": (uptobox.lockRep, params),
         "tmdbSerie": (createbdhk.tmdbSerie, params), "majhkneww": (scraperUPTO.majHkNew, ''), "findf": (createbdhk.rechercheFilm, params), "findss": (createbdhk.rechercheSerie, params),
         "findc": (affSearchCast, params),  "mepautostart": (mepAutoStart, ""), "affbaext": (createbdhk.affbaext, ""), "affbacat": (createbdhk.affbacat, params), "playMediabaext": (uptobox.playMediabaext, params),
-        "affbacattmdb": (createbdhk.affbacattmdb, params), "updateba": (importDatabase, "ba"), "intmajbann15": (intmajbann15, ''), "majhkcron": (majHkcron, ''),  "mepautostart2": (mepAutoStart2, ""),
+        "affbacattmdb": (createbdhk.affbacattmdb, params), "updateba": (importDatabase, "ba"), "rskin2": (rskin2, ''), "rskin3": (rskin3, ''), "intmajbann15": (intmajbann15, ''), "majhkcron": (majHkcron, ''),  "mepautostart2": (mepAutoStart2, ""),
         }
     if vIPTV:
         dictActionsIPTV = { "iptvLoad": (iptv.menu, ""), "affChaine": (iptv.affChaines, params), "playMediaIptv": (iptv.playMedia, params), "ajoutIPTV": (iptv.ajoutIPTV, ""), "loadF": (iptv.load, params),

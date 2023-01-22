@@ -94,26 +94,26 @@
         <setting id="traktperso" label="Mon Trakt" type="bool" default="false" />
         <setting id="usertrakt" label="User" type="text" default="" visible="eq(-1,true)" />
         <setting id="profiltrakt" label="Profil Bookmark Online" type="text" default="" visible="eq(-2,true)" />
-        <setting label="Liste TRAKT" type="lsep" />
-        <setting label="Création liste TRAKT" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=createLT)"/>
-        <setting label="Suppréssion groupe/liste TRAKT" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=suppLT)"/>
+        <setting label="Liste Trakt" type="lsep" />
+        <setting label="Création liste Trakt" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=createLT)"/>
+        <setting label="Suppression groupe/liste Trakt" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=suppLT)"/>
     </category>
     <!-- listes -->
     <category label="listes">
         <setting label="Liste MOVIE-DB" type="lsep" />
         <setting id="actiftmdb" label="Mon MOVIE-DB" type="bool" default="false" />
         <setting label="Création liste TMDB" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=createLTMDB)" visible="eq(-1,true)" />
-        <setting label="Suppréssion liste TMDB" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=suppLTMDB)" visible="eq(-2,true)" />
+        <setting label="Suppression liste TMDB" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=suppLTMDB)" visible="eq(-2,true)" />
         <setting label="Liste Perso" type="lsep" />
         <setting label="Création liste Perso" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=createL)"/>
-        <setting label="Suppréssion liste Perso" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=supL)"/>
+        <setting label="Suppression liste Perso" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=supL)"/>
         <setting label="Liste de Lecture" type="lsep" />
         <setting label="Création liste de Lecture" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=createLV)"/>
-        <setting label="Suppréssion liste de Lecture" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=suppLV)"/>
+        <setting label="Suppression liste de Lecture" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=suppLV)"/>
         <setting label="Liste PASTEBIN" type="lsep" />
         <setting id="actifpastebin" label="Mon Pastebin" type="bool" default="false" />
         <setting label="Création liste Pastebin" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=createLP)" visible="eq(-1,true)"/>
-        <setting label="Suppréssion liste Pastebin" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=suppLP)" visible="eq(-2,true)"/>
+        <setting label="Suppression liste Pastebin" type="action" action="RunPlugin(plugin://plugin.video.sendtokodiU2P/?action=suppLP)" visible="eq(-2,true)"/>
     </category>
     <!-- TV -->
     <category label="TV">
