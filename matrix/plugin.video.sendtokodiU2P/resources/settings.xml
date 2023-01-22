@@ -3,9 +3,10 @@
     <!-- Général -->
     <category label="Général">
         <!-- <setting label="DataBase HK1" type="lsep" />
-        <setting id="actifhk" label="Activer HK" type="bool" default="false" />
+        <setting id="actifhk" label="Activer HK" type="bool" default="false"  visible="false"/> 
         <setting id="numhk" label="Num HK" type="text" default="0000" visible="eq(-1,true)"/>-->
         <setting label="DataBase HK²" type="lsep" />
+        <setting id="actifhk" label="Activer HK" type="bool" default="false"  visible="false"/>
         <setting id="actifnewpaste" label="Activer Médiathéque HK²" type="bool" default="true" />
         <setting id="heberg" label="Hébergeur liste DB" type="labelenum" values="Anotepad|Pastebin|Rentry|Textup|fichier" default="Rentry"  visible="eq(-1,true)"/>
         <setting id="numHeberg" label="Numero Anotepad/Pastebin/Rentry/Textup" type="text" default="" visible="eq(-2,true)"/>
