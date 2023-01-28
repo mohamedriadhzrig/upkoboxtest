@@ -1,0 +1,9 @@
+<settings version="2">
+    <setting id="configmajbanniere" default="true" />
+    <setting id="skinhk2" default="true">false</setting>
+    <setting id="skinrefresh" default="true" />
+    <setting id="skinrefresh3" default="true" />
+    <setting id="forcemajbanniere" default="true" />
+    <setting id="forcemajrapide" default="true" />
+    <setting id="forcemajskin" default="true" />
+</settings>

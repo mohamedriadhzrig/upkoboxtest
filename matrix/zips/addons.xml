@@ -34,7 +34,7 @@
         <screenshot>resources/screenshot-10.jpg</screenshot>
     </assets>		
     </extension>
-</addon><addon id="plugin.video.sendtokodiU2P" name="U2Pplay (Beta)" version="0.9.9.1~beta4" provider-name="noway">
+</addon><addon id="plugin.video.sendtokodiU2P" name="U2Pplay" version="0.9.10-beta1" provider-name="noway">
   <requires>
     <trycatch>
       <try>
@@ -87,8 +87,8 @@
         </menu>
     </extension>
   <extension point="xbmc.addon.metadata">
-    <summary lang="en">U2Pplay (Beta)</summary>
-    <description lang="en">U2Pplay permet de streamer Films, Series, Animes... via Kodi. Necessite un compte premium Uptobox ou Alldebrid</description>
+    <summary lang="en">U2Pplay</summary>
+    <description lang="en">U2Pplay permet d'importer une base de contenu en 1 clic ou de creer des fichiers strm a partir d'IDs de pastes cryptes puis de les streamer via Kodi. Necessite un compte premium Uptobox ou Alldebrid</description>
     <disclaimer lang="en" />
     <platform>all</platform>
     <license>MIT License</license>
@@ -130,15 +130,15 @@
             <fanart>fanart.jpg</fanart>
         </assets>
     </extension>
-</addon><addon id="service.majhk" name="[COLOR orange]U2P Maj Rapide HK² (Bannière)[/COLOR]" version="1.1.8" provider-name="CoKodiCo">
+</addon><addon id="service.majhk" name="U2P Maj HK²" version="1.2.0" provider-name="CoKodiCo/noway">
     <requires>
     <import addon="xbmc.python" version="3.0.0" />
     <import addon="script.module.requests" version="2.12.4" />
   </requires>
   <extension point="xbmc.service" library="service.py" />
   <extension point="xbmc.addon.metadata">
-        <summary lang="en_GB">[COLOR orange]U2P Maj Rapide HK² (Bannière)[/COLOR]</summary>
-        <description lang="en_GB">Maj Rapide db HK² Auto au lancement Kodi (Avec bannière). Puis Auto par intervalle (Avec bannière) et Forcée (Avec bannière ou Sans), ensuite.                                                                                                                                                                [COLOR red](ATTENTION!) Un SEUL addon service U2P Maj. Doit être lancé au démarrage de Kodi![/COLOR]</description>
+        <summary lang="en_GB">U2P Maj Rapide HK²</summary>
+        <description lang="en_GB">Maj Rapide db HK² Automatique au lancement Kodi avec reglage delai, puis par intervalle</description>
         <language />
         <platform>all</platform>
         <license>Apache-2.0</license>

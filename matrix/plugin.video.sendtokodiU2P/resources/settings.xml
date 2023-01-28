@@ -87,7 +87,7 @@
     </category>
     <!-- Trakt -->
     <category label="Trakt">
-    	<setting id="clientid" type="text" label="Trakt Client Id"  default="29ed315a4ca3ead741a0844a44d8a3103e00071b89fd107aa54f13dc7795605f"/>
+        <setting id="clientid" type="text" label="Trakt Client Id"  default="29ed315a4ca3ead741a0844a44d8a3103e00071b89fd107aa54f13dc7795605f"/>
         <setting id="clientsecret" type="text" label="Trakt Client Secret"  default="ab17d047a094f0386f7c15eba3f6c945d29848ebe745aa84db168d45e08925ad"/>
         <setting id="clientacces" type="text" label="Trakt Acces"  default=""/>
         <setting id="clientrefresh" type="text" label="Trakt Refresh"  default=""/>
