@@ -8,26 +8,30 @@ import sys
 import unicodedata
 import threading
 import json
-from medias import Media, TMDB
-import sqlite3
-from util import *
-import widget
-from apiTraktHK import TraktHK
-pyVersion = sys.version_info.major
-pyVersionM = sys.version_info.minor
-if pyVersionM == 11:
-    import cryptPaste11 as cryptage
-    import scraperUPTO11 as scraperUPTO
-elif pyVersionM == 8:
-    #import pasteCrypt3 as cryptage
-    import cryptPaste8 as cryptage
-    import scraperUPTO8 as scraperUPTO
-elif pyVersionM == 9:
-    import cryptPaste9 as cryptage
-    import scraperUPTO9 as scraperUPTO
-else:
-    import cryptPaste10 as cryptage
-    import scraperUPTO10 as scraperUPTO
+try:
+    from medias import Media, TMDB
+    import sqlite3
+    from util import *
+    import widget
+    from apiTraktHK import TraktHK
+
+    pyVersion = sys.version_info.major
+    pyVersionM = sys.version_info.minor
+    if pyVersionM == 11:
+        import cryptPaste11 as cryptage
+        import scraperUPTO11 as scraperUPTO
+    elif pyVersionM == 8:
+        #import pasteCrypt3 as cryptage
+        import cryptPaste8 as cryptage
+        import scraperUPTO8 as scraperUPTO
+    elif pyVersionM == 9:
+        import cryptPaste9 as cryptage
+        import scraperUPTO9 as scraperUPTO
+    else:
+        import cryptPaste10 as cryptage
+        import scraperUPTO10 as scraperUPTO
+except: pass
+
 import ast
 
 try:
@@ -70,7 +74,7 @@ class RenameMedia:
             return [nameFinal, year]
 
         else:
-            for m in ["_", " ", "[", "]", "-", "(", ")", "{", "}"]:
+            for m in ["_", " ", "[", "]", "-", "(", ")", "{", "}", ",", ";"]:
                 name = name.replace(m, ".")
             tab_remp = [r'''-|_|iNTERNAL|MULTi|2160p|4k|1080p|720p|480p|WEB-DL|hdlight|WEB|AC3|aac|hdtv|hevc|\d\dbit|subs?\.|vos?t?|x\.?265|STEGNER|x\.?264|FRENCH|DD\+.5.1|DD\+| |SR\.?71|h264|h265|1920x1080''', '.']
             name = re.sub(tab_remp[0], tab_remp[1], name, flags=re.I)
@@ -221,7 +225,10 @@ class Uptobox:
         url = self.baseurl + "/api/user/public?folder={}&hash={}&limit={}&offset={}".format(folder, hash, limit, offset)
         data = self.getDataJson(url)
         if data['data']["list"]:
-            [tabMedia.append((d['file_created'], d['file_name'], d['file_code'])) for d in data['data']["list"]]
+            if 'file_created' in data['data']["list"][0].keys():
+                [tabMedia.append((d['file_created'], d['file_name'], d['file_code'])) for d in data['data']["list"]]
+            else:
+                [tabMedia.append((d['file_date_inserted'], d['file_name'], d['file_code'])) for d in data['data']["list"]]
             #[tabMedia.append((d['file_name'], d['file_code'])) for d in data['data']["list"]]
         return tabMedia
 
@@ -235,7 +242,11 @@ class Uptobox:
                 r = requests.get(url)
                 data = r.json()
                 if data['data']["list"]:
-                    [tabMedia.append((d['file_created'], d['file_name'], d['file_code'])) for d in data['data']["list"]]
+                    if 'file_created' in data['data']["list"][0].keys():
+                        [tabMedia.append((d['file_created'], d['file_name'], d['file_code'])) for d in data['data']["list"]]
+                    else:
+                        [tabMedia.append((d['file_date_inserted'], d['file_name'], d['file_code'])) for d in data['data']["list"]]
+
                     j += i
                 else:
                     break
@@ -740,6 +751,7 @@ def getEpisodesSaison(numId):
         liste = []
         renam = RenameMedia()
         for nom, filecode in tabExtract:
+            #notice(nom)
             n = renam.extractInfo(nom, typM="tvshow")
             try:
                 tabFiles.append(("Saison %s" %n[1], int(n[2].split("E")[1]), filecode))
@@ -1357,7 +1369,7 @@ def affUptoboxNewsSerie(typM, medias, params=""):
 def addDirectoryEpisodes(name, isFolder=True, parameters={}, media="" ):
     ''' Add a list item to the XBMC UI.'''
     li = xbmcgui.ListItem(label=("%s" %(name)))
-    
+
     updateInfoTagVideo(li,media,False,True,False,False,True)
     li.setArt({'icon': media.backdrop,
               "fanart": media.backdrop})
@@ -1368,7 +1380,18 @@ def addDirectoryEpisodes(name, isFolder=True, parameters={}, media="" ):
 def addDirectoryUptobox(name, isFolder=True, parameters={}, media="" ):
     ''' Add a list item to the XBMC UI.'''
     li = xbmcgui.ListItem(label=name)
-    updateInfoTagVideo(li,media,True,False,True,True)
+    #li, media, setUniqueId= False, isSerie=False, hasDuration=False, replaceTitle=False, hasPlaycount=False
+    #if "episode" in parameters.keys():
+    #    vinfo = updateInfoTagVideo(li, media, True, True, True, False, True)
+    #else:
+    #    vinfo = updateInfoTagVideo(li, media, True, False, True, False, False)
+
+    updateInfoTagVideo2(li, media)
+
+    #try:
+    #    vinfo.setPlaycount(int(media.vu))
+    #except: pass
+
     # Todo Later : a vérifier si ca marche, pour le moment je n'arrive pas a tester
     #Ensuite à factoriser
     #if media.poster[-4:] == ".jpg":
@@ -1377,14 +1400,14 @@ def addDirectoryUptobox(name, isFolder=True, parameters={}, media="" ):
     #else:
     #    vinfo.addAvailableArtwork(media.backdrop,"thumb")
     #    vinfo.addAvailableArtwork(media.backdrop,"poster")
-    #    
+    #
     #vinfo.addAvailableArtwork(media.backdrop,"fanart")
     #vinfo.addAvailableArtwork(media.backdrop,"icon")
     #if media.clearlogo :
     #    vinfo.addAvailableArtwork(media.clearlogo,"clearlogo")
     #if media.clearart :
     #    vinfo.addAvailableArtwork(media.clearart,"clearart")
-        
+
     if media.poster[-4:] == ".jpg":
         li.setArt({'icon': media.backdrop,
             'thumb': media.poster,
@@ -1488,6 +1511,7 @@ def getHistoUpto(bd):
     cur2.close()
     cnx2.close()
     mDB = TMDB(KEYTMDB)
+    params = {}
     for i, media in enumerate(bookmark):
         params = dict(parse_qsl(media.split("?")[1]))
         #notice(params)
@@ -1503,7 +1527,8 @@ def getHistoUpto(bd):
     #    time.sleep(0.1)
     testThread()
     medias = mDB.extractListe
-    affUptobox("movie", [x[1:]  for x in medias if x[1] != "Inconnu"], params)
+    if params:
+        affUptobox("movie", [x[1:]  for x in medias if x[1] != "Inconnu"], params)
 
 if __name__ == '__main__':
     pass
