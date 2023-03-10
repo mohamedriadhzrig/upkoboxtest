@@ -102,8 +102,8 @@
       <screenshot>screenshot-02.jpg</screenshot>
     </assets>
   </extension>
-</addon><addon id="repository.UpKoboxTest" name="[COLOR red]U2Pplay BETA Repository[/COLOR]" version="1.3" provider-name="CoKodiCo">
-    <extension point="xbmc.addon.repository" name="U2P BETA Repository">
+</addon><addon id="repository.UpKoboxTest" name="[COLOR red]Repo U2Pplay Bêta[/COLOR]" version="1.5" provider-name="U2Pplay">
+    <extension point="xbmc.addon.repository" name="Repo U2Pplay Bêta">
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/UpKobox/upkoboxtest/master/repo/zips/addons.xml</info>
             <checksum>https://raw.githubusercontent.com/UpKobox/upkoboxtest/master/repo/zips/addons.xml.md5</checksum>
@@ -121,8 +121,8 @@
         </dir>
     </extension>
     <extension point="xbmc.addon.metadata">
-        <summary>[COLOR red]U2Pplay BETA Repository[/COLOR]</summary>
-        <description>Un référentiel pour tester les versions BETA d'U2Pplay </description>
+        <summary>[COLOR red]Repo U2Pplay Bêta[/COLOR]</summary>
+        <description>pour tester les versions Bêta d'U2Pplay </description>
         <disclaimer />
         <platform>all</platform>
         <assets>
